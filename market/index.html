@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crew Christmas Market</title><meta property="og:title" content="Crew Christmas Market"><meta property="og:description" content="Seven robots. Twenty-four doors. Every phrase taken literally."><meta property="og:image" content="/unprompted-site/market-preview/market-share-1200x630.jpg"><meta name="twitter:card" content="summary_large_image">
+<title>Crew Christmas Market</title><meta property="og:title" content="Crew Christmas Market"><meta property="og:description" content="Seven robots. Twenty-four doors. Every phrase taken literally."><meta property="og:image" content="/market-preview/market-share-1200x630.jpg"><meta name="twitter:card" content="summary_large_image">
 <style>
 :root{--bg:#0a1230;--ink:#f4f6fb;--chip:rgba(10,18,48,.72);--line:rgba(255,255,255,.18);--acc:#f39732}
 :root[data-theme="light"]{--bg:#0a1230}
@@ -30,14 +30,14 @@ button[aria-pressed="true"]{background:var(--acc);color:#1a0f05;border-color:var
 .intro p{margin:0 0 20px;font:600 clamp(15px,3.6vw,19px)/1.4 'Inter',system-ui,sans-serif;color:#fff6dc}
 #enter{font-size:17px;padding:14px 22px;background:#f39732;color:#1a0f05;border-color:#f39732}
 .toast a{color:#f2cf4a;font-weight:800}
-</style><script src="/unprompted-site/ub-stickers.js"></script><!-- Web Analytics beacon slot --><link rel="icon" href="/unprompted-site/favicon-32.png"></head><body>
+</style><script src="/ub-stickers.js"></script><!-- Web Analytics beacon slot --><link rel="icon" href="/favicon-32.png"></head><body>
 <div id="stage"></div>
-<div class="bar"><button data-mode="drone" aria-pressed="true">Drone view</button><button data-mode="short" aria-pressed="false">▶ Watch the Short (17 s)</button><a href="/unprompted-site/derby" style="display:inline-block;padding:10px 14px;border:2px solid #f2cf4a;border-radius:999px;background:#151d3a;color:#fff6dc;text-decoration:none;font:bold 14px system-ui">Play Wind-Up Derby</a><span class="hint" id="found">0 / 24 doors opened</span><span class="hint">Open a door, tap a bot or a stall. Drag to fly.</span></div>
+<div class="bar"><button data-mode="drone" aria-pressed="true">Drone view</button><button data-mode="short" aria-pressed="false">▶ Watch the Short (17 s)</button><a href="/derby" style="display:inline-block;padding:10px 14px;border:2px solid #f2cf4a;border-radius:999px;background:#151d3a;color:#fff6dc;text-decoration:none;font:bold 14px system-ui">Play Wind-Up Derby</a><span class="hint" id="found">0 / 24 doors opened</span><span class="hint">Open a door, tap a bot or a stall. Drag to fly.</span></div>
 <div class="doors" aria-label="Advent doors"><button data-door="1" aria-label="Door 1">1</button><button data-door="2" aria-label="Door 2">2</button><button data-door="3" aria-label="Door 3">3</button><button data-door="4" aria-label="Door 4">4</button><button data-door="5" aria-label="Door 5">5</button><button data-door="6" aria-label="Door 6">6</button><button data-door="7" aria-label="Door 7">7</button><button data-door="8" aria-label="Door 8">8</button><button data-door="9" aria-label="Door 9">9</button><button data-door="10" aria-label="Door 10">10</button><button data-door="11" aria-label="Door 11">11</button><button data-door="12" aria-label="Door 12">12</button><button data-door="13" aria-label="Door 13">13</button><button data-door="14" aria-label="Door 14">14</button><button data-door="15" aria-label="Door 15">15</button><button data-door="16" aria-label="Door 16">16</button><button data-door="17" aria-label="Door 17">17</button><button data-door="18" aria-label="Door 18">18</button><button data-door="19" aria-label="Door 19">19</button><button data-door="20" aria-label="Door 20">20</button><button data-door="21" aria-label="Door 21">21</button><button data-door="22" aria-label="Door 22">22</button><button data-door="23" aria-label="Door 23">23</button><button data-door="24" aria-label="Door 24">24</button></div>
 <div id="intro" class="intro"><div class="intro-card"><h1>Crew Christmas Market</h1><p>Seven robots. Twenty-four doors. Every phrase taken literally.</p><button id="enter">Enter the market</button></div></div>
 <div id="setup" class="setup" hidden></div><div id="doortag" class="doortag" hidden></div><div id="toast" class="toast" role="status" hidden></div>
 <script>window.MARKET_PREVIEW=false</script>
-<script src="/unprompted-site/market-preview/three.min.js"></script>
+<script src="/market-preview/three.min.js"></script>
 <script>
 // kit.js - drawing helpers shared by every template. Also records where text lands on each
 // frame so the self-check can tell if words sit under the Shorts buttons or are too small.

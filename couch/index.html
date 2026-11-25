@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script src="/unprompted-site/ub-stickers.js"></script><!-- Web Analytics beacon slot --><link rel="icon" href="/unprompted-site/favicon-32.png"></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script src="/ub-stickers.js"></script><!-- Web Analytics beacon slot --><link rel="icon" href="/favicon-32.png"></head><body>
 <title>Crew Couch</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Watch the Unprompted Behavior long videos with the AI crew on the couch.">
@@ -647,7 +647,7 @@ const C21 = (() => {
 
   // Live site: fill channels from the site's own YouTube feed (long videos only).
   if (SITE) {
-    fetch('/unprompted-site/feed.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => {
+    fetch('/feed.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => {
       const vids = (d && d.videos || []).filter(v => v && v.id && v.url && !v.url.includes('/shorts/'));
       if (!vids.length) return;
       const seen = new Set(), next = [];

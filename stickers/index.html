@@ -73,7 +73,7 @@ dialog img{width:100%;border-radius:10px;display:block;margin:0 0 .8rem}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(120px);background:var(--lime);color:#111210;font-weight:800;padding:.6rem 1rem;border-radius:999px;transition:transform .35s cubic-bezier(.2,1.5,.4,1);z-index:20;max-width:calc(100vw - 32px);text-align:center}
 .toast{visibility:hidden}.toast.show{transform:translateX(-50%) translateY(0);visibility:visible}
 @media (prefers-reduced-motion:reduce){.st.pop canvas{animation:none}.bar div{transition:none}}
-</style><!-- Web Analytics beacon slot --><link rel="icon" href="/unprompted-site/favicon-32.png"></head><body>
+</style><!-- Web Analytics beacon slot --><link rel="icon" href="/favicon-32.png"></head><body>
 <div class="wrap">
   <header class="top">
     <div><p class="label">Unprompted Behavior · Series 1</p><h1><i aria-hidden="true"></i>Crew Sticker Album</h1>
@@ -703,7 +703,7 @@ const ST = (() => {
     ST.PAGES.forEach(pg => {
       $('pg-' + pg.id).style.display = pg.id === page ? '' : 'none';
       const b = document.querySelector(`.tabs button[data-p="${pg.id}"]`); b.setAttribute('aria-pressed', pg.id === page);
-      const list = ALL.filter(s => s.page === pg.id); b.querySelector('span').textContent = list.filter(s => got.has(s.id)).length + '/unprompted-site/' + list.length;
+      const list = ALL.filter(s => s.page === pg.id); b.querySelector('span').textContent = list.filter(s => got.has(s.id)).length + '/' + list.length;
     });
     ALL.filter(s => s.page === page).forEach(paintTile);
   }
