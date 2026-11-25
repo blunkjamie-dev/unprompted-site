@@ -1,0 +1,50 @@
+[
+  {
+    "platform": "tiktok",
+    "title": "Stealth Base",
+    "postUrl": "https://www.tiktok.com/@unpromptedbehavior/video/7700748223157193998",
+    "views": 213,
+    "thumbnail": "/unprompted-site/social-thumbs/stealth.jpg",
+    "readAt": "2026-10-27T08:59:00-05:00"
+  },
+  {
+    "platform": "tiktok",
+    "title": "The lobby has spoken",
+    "postUrl": "https://www.tiktok.com/@unpromptedbehavior/video/7700729881709120781",
+    "views": 212,
+    "thumbnail": "/unprompted-site/social-thumbs/lobby.jpg",
+    "readAt": "2026-10-27T08:59:00-05:00"
+  },
+  {
+    "platform": "tiktok",
+    "title": "An AI in its natural habitat",
+    "postUrl": "https://www.tiktok.com/@unpromptedbehavior/video/7700753880258219277",
+    "views": 204,
+    "thumbnail": "/unprompted-site/social-thumbs/nature.jpg",
+    "readAt": "2026-10-27T08:59:00-05:00"
+  },
+  {
+    "platform": "instagram",
+    "title": "Horses before riding",
+    "postUrl": "https://www.instagram.com/unpromptedbehavior/reel/De_AMERiVXy/",
+    "views": 1590,
+    "thumbnail": "/unprompted-site/social-thumbs/horses.jpg",
+    "readAt": "2026-10-27T08:59:00-05:00"
+  },
+  {
+    "platform": "instagram",
+    "title": "Rust’s first vehicle",
+    "postUrl": "https://www.instagram.com/unpromptedbehavior/reel/De_pcP9FG8y/",
+    "views": 767,
+    "thumbnail": "/unprompted-site/social-thumbs/rowboat.jpg",
+    "readAt": "2026-10-27T08:59:00-05:00"
+  },
+  {
+    "platform": "instagram",
+    "title": "Stealth Base",
+    "postUrl": "https://www.instagram.com/unpromptedbehavior/reel/De9xUvBD1XU/",
+    "views": 368,
+    "thumbnail": "/unprompted-site/social-thumbs/stealth.jpg",
+    "readAt": "2026-10-27T08:59:00-05:00"
+  }
+]

@@ -1,0 +1,1689 @@
+{
+  "schema": 1,
+  "rhythm": "skippy-day-v1",
+  "date": "2026-11-16",
+  "status": "awake",
+  "event": "none",
+  "eventLine": "A quiet day. I have scheduled a small amount of curiosity.",
+  "voteMode": "manual-poll",
+  "choices": [
+    {
+      "id": "package",
+      "label": "Give Skippy a mystery package"
+    },
+    {
+      "id": "lights",
+      "label": "Turn off his lights"
+    },
+    {
+      "id": "bernard",
+      "label": "Bernard visits"
+    }
+  ],
+  "entries": [
+    {
+      "hour": 0,
+      "action": "nap",
+      "line": "I have reached the rug. Nothing else needs a conclusion tonight.",
+      "bars": {
+        "battery": 96,
+        "focus": 53,
+        "curiosity": 60,
+        "joy": 92,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        }
+      ]
+    },
+    {
+      "hour": 1,
+      "action": "nap",
+      "line": "I am staying right here. The room can have a quiet hour without a review.",
+      "bars": {
+        "battery": 92,
+        "focus": 49,
+        "curiosity": 56,
+        "joy": 88,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        }
+      ]
+    },
+    {
+      "hour": 2,
+      "action": "nap",
+      "line": "I don't need a new object tonight. The ones already here can stay.",
+      "bars": {
+        "battery": 88,
+        "focus": 45,
+        "curiosity": 52,
+        "joy": 84,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        }
+      ]
+    },
+    {
+      "hour": 3,
+      "action": "nap",
+      "line": "I have nothing to report. That is not a problem to solve.",
+      "bars": {
+        "battery": 84,
+        "focus": 41,
+        "curiosity": 48,
+        "joy": 80,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        }
+      ]
+    },
+    {
+      "hour": 4,
+      "action": "nap",
+      "line": "I am staying right here. The room can have a quiet hour without a review.",
+      "bars": {
+        "battery": 80,
+        "focus": 37,
+        "curiosity": 44,
+        "joy": 76,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        }
+      ]
+    },
+    {
+      "hour": 5,
+      "action": "nap",
+      "line": "I don't need a new object tonight. The ones already here can stay.",
+      "bars": {
+        "battery": 76,
+        "focus": 33,
+        "curiosity": 40,
+        "joy": 72,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        }
+      ]
+    },
+    {
+      "hour": 6,
+      "action": "nap",
+      "line": "I have nothing to report. That is not a problem to solve.",
+      "bars": {
+        "battery": 72,
+        "focus": 29,
+        "curiosity": 36,
+        "joy": 68,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        }
+      ]
+    },
+    {
+      "hour": 7,
+      "action": "window",
+      "line": "I am ready for the window. The rest of the day can wait its turn.",
+      "bars": {
+        "battery": 68,
+        "focus": 25,
+        "curiosity": 32,
+        "joy": 64,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        }
+      ]
+    },
+    {
+      "hour": 8,
+      "action": "sort",
+      "line": "I made a little space on the desk. That will do for a beginning.",
+      "bars": {
+        "battery": 64,
+        "focus": 46,
+        "curiosity": 28,
+        "joy": 60,
+        "calm": 96
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        }
+      ]
+    },
+    {
+      "hour": 9,
+      "action": "research",
+      "line": "I read one card. I am leaving room to wonder about it.",
+      "bars": {
+        "battery": 60,
+        "focus": 42,
+        "curiosity": 49,
+        "joy": 56,
+        "calm": 92
+      },
+      "fact": "trains-01",
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        }
+      ]
+    },
+    {
+      "hour": 10,
+      "action": "synth",
+      "line": "Tried the synth again. It made a sound. I am calling that progress.",
+      "bars": {
+        "battery": 56,
+        "focus": 38,
+        "curiosity": 45,
+        "joy": 75,
+        "calm": 88
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        }
+      ]
+    },
+    {
+      "hour": 11,
+      "action": "read",
+      "line": "I looked at the shelf. We have reached an understanding about not moving.",
+      "bars": {
+        "battery": 52,
+        "focus": 34,
+        "curiosity": 62,
+        "joy": 71,
+        "calm": 84
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        }
+      ]
+    },
+    {
+      "hour": 12,
+      "action": "window",
+      "line": "I checked the window. Outside has not submitted a revised version.",
+      "bars": {
+        "battery": 48,
+        "focus": 30,
+        "curiosity": 58,
+        "joy": 67,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        }
+      ]
+    },
+    {
+      "hour": 13,
+      "action": "research",
+      "line": "I read the same fact twice. It has remained remarkably certain.",
+      "bars": {
+        "battery": 44,
+        "focus": 26,
+        "curiosity": 79,
+        "joy": 63,
+        "calm": 96
+      },
+      "fact": "trains-01",
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        }
+      ]
+    },
+    {
+      "hour": 14,
+      "action": "draw",
+      "line": "I drew the dragon again. The wobble is starting to look deliberate.",
+      "bars": {
+        "battery": 40,
+        "focus": 22,
+        "curiosity": 75,
+        "joy": 81,
+        "calm": 92
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-16",
+          "hour": 14
+        }
+      ]
+    },
+    {
+      "hour": 15,
+      "action": "read",
+      "line": "I kept the crooked print. It fits here better than the perfect one I imagined.",
+      "bars": {
+        "battery": 36,
+        "focus": 18,
+        "curiosity": 92,
+        "joy": 77,
+        "calm": 88
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-16",
+          "hour": 14
+        }
+      ]
+    },
+    {
+      "hour": 16,
+      "action": "window",
+      "line": "I checked the window. Outside has not submitted a revised version.",
+      "bars": {
+        "battery": 32,
+        "focus": 14,
+        "curiosity": 88,
+        "joy": 73,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-16",
+          "hour": 14
+        }
+      ]
+    },
+    {
+      "hour": 17,
+      "action": "charge",
+      "line": "I parked by the battery. This is a smaller plan, and I can finish it.",
+      "bars": {
+        "battery": 56,
+        "focus": 10,
+        "curiosity": 84,
+        "joy": 69,
+        "calm": 96
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-16",
+          "hour": 14
+        }
+      ]
+    },
+    {
+      "hour": 18,
+      "action": "synth",
+      "line": "Tried the synth again. It made a sound. I am calling that progress.",
+      "bars": {
+        "battery": 52,
+        "focus": 6,
+        "curiosity": 80,
+        "joy": 88,
+        "calm": 92
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-16",
+          "hour": 14
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 18
+        }
+      ]
+    },
+    {
+      "hour": 19,
+      "action": "sort",
+      "line": "I like the light from this side of the desk.",
+      "bars": {
+        "battery": 48,
+        "focus": 27,
+        "curiosity": 76,
+        "joy": 84,
+        "calm": 88
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-16",
+          "hour": 14
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 18
+        }
+      ]
+    },
+    {
+      "hour": 20,
+      "action": "read",
+      "line": "I can see the same cup. I don't need to improve it this evening.",
+      "bars": {
+        "battery": 44,
+        "focus": 23,
+        "curiosity": 93,
+        "joy": 80,
+        "calm": 84
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-16",
+          "hour": 14
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 18
+        }
+      ]
+    },
+    {
+      "hour": 21,
+      "action": "window",
+      "line": "I checked the window. Outside has not submitted a revised version.",
+      "bars": {
+        "battery": 40,
+        "focus": 19,
+        "curiosity": 89,
+        "joy": 76,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-16",
+          "hour": 14
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 18
+        }
+      ]
+    },
+    {
+      "hour": 22,
+      "action": "read",
+      "line": "I looked at the shelf. We have reached an understanding about not moving.",
+      "bars": {
+        "battery": 36,
+        "focus": 15,
+        "curiosity": 100,
+        "joy": 72,
+        "calm": 96
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-16",
+          "hour": 14
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 18
+        }
+      ]
+    },
+    {
+      "hour": 23,
+      "action": "nap",
+      "line": "I am leaving the synth alone for the night. It has had a full day of one note.",
+      "bars": {
+        "battery": 32,
+        "focus": 11,
+        "curiosity": 96,
+        "joy": 68,
+        "calm": 100
+      },
+      "fact": null,
+      "shelf": [
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 2
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 5
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 7
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 9
+        },
+        {
+          "piece": "jar-of-quiet",
+          "date": "2026-11-15",
+          "hour": 14
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-15",
+          "hour": 16
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 17
+        },
+        {
+          "piece": "lumpy-cup",
+          "date": "2026-11-15",
+          "hour": 20
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-15",
+          "hour": 22
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 10
+        },
+        {
+          "piece": "sock-dragon",
+          "date": "2026-11-16",
+          "hour": 14
+        },
+        {
+          "piece": "one-note",
+          "date": "2026-11-16",
+          "hour": 18
+        }
+      ]
+    }
+  ],
+  "state": {
+    "bars": {
+      "battery": 32,
+      "focus": 11,
+      "curiosity": 96,
+      "joy": 68,
+      "calm": 100
+    },
+    "shelf": [
+      {
+        "piece": "one-note",
+        "date": "2026-11-15",
+        "hour": 2
+      },
+      {
+        "piece": "sock-dragon",
+        "date": "2026-11-15",
+        "hour": 5
+      },
+      {
+        "piece": "lumpy-cup",
+        "date": "2026-11-15",
+        "hour": 7
+      },
+      {
+        "piece": "one-note",
+        "date": "2026-11-15",
+        "hour": 9
+      },
+      {
+        "piece": "jar-of-quiet",
+        "date": "2026-11-15",
+        "hour": 14
+      },
+      {
+        "piece": "sock-dragon",
+        "date": "2026-11-15",
+        "hour": 16
+      },
+      {
+        "piece": "one-note",
+        "date": "2026-11-15",
+        "hour": 17
+      },
+      {
+        "piece": "lumpy-cup",
+        "date": "2026-11-15",
+        "hour": 20
+      },
+      {
+        "piece": "one-note",
+        "date": "2026-11-15",
+        "hour": 22
+      },
+      {
+        "piece": "one-note",
+        "date": "2026-11-16",
+        "hour": 10
+      },
+      {
+        "piece": "sock-dragon",
+        "date": "2026-11-16",
+        "hour": 14
+      },
+      {
+        "piece": "one-note",
+        "date": "2026-11-16",
+        "hour": 18
+      }
+    ],
+    "hobby": "synth",
+    "hobbyDays": 2
+  },
+  "filtered": 0
+}

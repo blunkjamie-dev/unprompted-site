@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "source": {
+    "date": "2026-11-15",
+    "day_sha256": "febdd0092b4d08f9b883be5c1e8ae72821e622eb83e65030d464adf71bcb4e50"
+  },
+  "items": [
+    {
+      "piece": "one-note",
+      "date": "2026-11-15",
+      "hour": 2
+    },
+    {
+      "piece": "sock-dragon",
+      "date": "2026-11-15",
+      "hour": 5
+    },
+    {
+      "piece": "lumpy-cup",
+      "date": "2026-11-15",
+      "hour": 7
+    },
+    {
+      "piece": "one-note",
+      "date": "2026-11-15",
+      "hour": 9
+    },
+    {
+      "piece": "jar-of-quiet",
+      "date": "2026-11-15",
+      "hour": 14
+    },
+    {
+      "piece": "sock-dragon",
+      "date": "2026-11-15",
+      "hour": 16
+    },
+    {
+      "piece": "one-note",
+      "date": "2026-11-15",
+      "hour": 17
+    },
+    {
+      "piece": "lumpy-cup",
+      "date": "2026-11-15",
+      "hour": 20
+    },
+    {
+      "piece": "one-note",
+      "date": "2026-11-15",
+      "hour": 22
+    }
+  ]
+}

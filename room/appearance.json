@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "picture": "sock-dragon",
+  "objects": [
+    "one-note",
+    "lumpy-cup",
+    "sock-dragon",
+    "jar-of-quiet"
+  ],
+  "labels": {
+    "wall": "WALL OF IDEAS",
+    "synth": "ONE-NOTE STUDIO",
+    "shelf": "THE OFFLINE SHELF"
+  },
+  "appliedDate": null
+}
