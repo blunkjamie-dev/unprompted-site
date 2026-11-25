@@ -9,7 +9,7 @@
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;overflow:hidden}
 #stage{position:fixed;inset:0}#stage canvas{display:block;touch-action:none}
 .bar{position:fixed;left:16px;right:16px;bottom:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;pointer-events:none}
-.bar>*{pointer-events:auto}
+.bar>*{pointer-events:auto}.bar .hint{pointer-events:none}
 button{font:600 14px/1 'Inter',system-ui,sans-serif;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:10px 14px;cursor:pointer;backdrop-filter:blur(6px)}
 button[aria-pressed="true"]{background:var(--acc);color:#1a0f05;border-color:var(--acc)}
 .hint{font-size:12px;opacity:.75;background:var(--chip);padding:8px 12px;border-radius:999px}
@@ -516,7 +516,9 @@ function signTex(text, bg, fg) {
   g.fillStyle = fg; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(text, 256, 58);
   const t = new THREE.CanvasTexture(c); t.anisotropy = 4; return t;
 }
+const stallParts = {solid: new Map(), glow: new Map()};
 STALLS.forEach(st => {
+  const firstSolid = solid.length, firstGlow = glow.length;
   const R = 11.2, base = new THREE.Matrix4().compose(polar(st.a, R), new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), (st.a + 180) * D2R), new THREE.Vector3(1, 1, 1));
   const B = (...a) => box(solid, base, ...a);
   const wood = '#7a4a26', woodL = '#a5683a';
@@ -545,6 +547,8 @@ STALLS.forEach(st => {
   sign.position.copy(new THREE.Vector3(0, 3.9, 0.9).applyMatrix4(base)); sign.rotation.y = (st.a + 180) * D2R; scene.add(sign); st.mesh = sign;
   // inside warm light
   halo(new THREE.Vector3(0, 1.9, 0.2).applyMatrix4(base), '#ffb35c', 3.2, 'stall');
+  for (let i=firstSolid; i<solid.length; i++) stallParts.solid.set(i,st);
+  for (let i=firstGlow; i<glow.length; i++) stallParts.glow.set(i,st);
 });
 
 // lamp posts between stalls
@@ -591,7 +595,7 @@ function inst(list, mat) {
   list.forEach((v, i) => { m.setMatrixAt(i, v.m); m.setColorAt(i, v.c); });
   m.instanceMatrix.needsUpdate = true; m.instanceColor.needsUpdate = true; scene.add(m); return m;
 }
-inst(solid, new THREE.MeshLambertMaterial());
+const solidMesh = inst(solid, new THREE.MeshLambertMaterial());
 const glowMesh = inst(glow, new THREE.MeshBasicMaterial({ fog: false }));
 const baseGlow = glow.map(v => v.c.clone());
 
@@ -950,9 +954,12 @@ const unlocked = n => PREVIEW || Date.now() >= new Date(2026, 11, n).getTime();
 const $ = id => document.getElementById(id);
 function toast(msg, html) { const tb = $('toast'); if (!tb) return; tb.innerHTML = html || ''; if (!html) tb.textContent = msg; tb.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => tb.hidden = true, 6000); }
 function doorLen(n) { const D = DOORS[n]; return D.gag === 'home' ? BUB[D.who][1] - BUB[D.who][0] + 2.4 : D.gag === 'finale' ? 7 : BUB_END + 0.6; }
+function playScene(n) {
+  setMode('drone'); door = n; doorAt = nowT;
+}
 function openDoor(n) {
   if (!unlocked(n)) return toast(`Door ${n} opens on December ${n}.`);
-  setMode('drone'); door = n; doorAt = nowT; opened.add(n);
+  playScene(n); opened.add(n);
   window.UBStickers?.give('d'+n); if([1,2,3,4,5,6,7].every(i=>opened.has(i)))window.UBStickers?.give('g4');
   if (n === 24) finaleAt = nowT + 0.9;
   try { localStorage.setItem('market-opened', JSON.stringify([...opened])); } catch (e) {}
@@ -973,11 +980,31 @@ el.addEventListener('pointermove', e => { if (!drag) return; const dx = e.client
 el.addEventListener('pointerup', e => { const was = drag; drag = null; if (!was || moved > 6) return;
   const r = el.getBoundingClientRect(); ndc.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
   ray.setFromCamera(ndc, camera);
-  const hits = ray.intersectObjects([...Object.values(CREW).map(c => c.s.sp), ...STALLS.map(s => s.mesh)]);
-  const tapBot = k => { const n = [1, 2, 3, 4, 5, 6, 7].find(i => DOORS[i].who === k); openDoor(n); };
-  if (hits.length) { const st = STALLS.find(s => s.mesh === hits[0].object);
-    if (st) return toast('', `<span>${st.sign}</span> <a href="${SHOP + st.shop}" target="_blank" rel="noopener">Shop: ${st.item} →</a>`);
-    return tapBot(Object.keys(CREW).find(k => CREW[k].s.sp === hits[0].object)); }
+  const tapBot = k => {
+    const n = [1, 2, 3, 4, 5, 6, 7].find(i => DOORS[i].who === k);
+    playScene(n);
+  };
+  const bots = Object.values(CREW).filter(c => c.s.sp.visible);
+  const hits = ray.intersectObjects([...bots.map(c => c.s.sp), ...STALLS.map(s => s.mesh), solidMesh, glowMesh], false);
+  for (const hit of hits) {
+    const bot = bots.find(c => c.s.sp === hit.object);
+    if (bot) {
+      // A sprite includes transparent padding around the drawn robot.
+      const s = bot.s, x = clamp(Math.floor(hit.uv.x * s.c.width), 0, s.c.width-1);
+      const y = clamp(Math.floor((1-hit.uv.y) * s.c.height), 0, s.c.height-1);
+      if (s.g.getImageData(x,y,1,1).data[3] < 21) continue;
+      return tapBot(s.who);
+    }
+    const st = hit.object === solidMesh ? stallParts.solid.get(hit.instanceId)
+      : hit.object === glowMesh ? stallParts.glow.get(hit.instanceId)
+      : STALLS.find(s => s.mesh === hit.object);
+    if (st) {
+      if (st.who) tapBot(st.who);
+      return toast('', `<span>${st.sign}</span> <a href="${SHOP + st.shop}" target="_blank" rel="noopener">Shop: ${st.item} →</a>`);
+    }
+    // An opaque piece of scenery may hide a booth behind it.
+    break;
+  }
   let best = null, bd = 70; // forgiving tap: nearest bot within 70 px
   for (const k in CREW) { const v = CREW[k].pos.clone().add(new THREE.Vector3(0, 0.8, 0)).project(camera);
     const d = Math.hypot(r.left + (v.x + 1) / 2 * r.width - e.clientX, r.top + (1 - v.y) / 2 * r.height - e.clientY); if (v.z < 1 && d < bd) { bd = d; best = k; } }
