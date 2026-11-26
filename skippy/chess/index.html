@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Chess with Skippy</title>
+<meta name="robots" content="index">
+<style>
+/* Layout: one paper chessboard on Skippy's dark room wall, with Skippy's notes pinned beside it (stacked under it on phones). */
+:root{
+  --bg:#171c20; --panel:#232a2e; --ink:#f1e9d7; --muted:#bdb9a8; --gold:#e9be64; --lav:#b7a3c6;
+  --line:#3f4447; --paper:#eee3c9; --paperdark:#a8977a; --paperink:#34352e;
+  --hl:#e9be64; --move:rgba(233,190,100,.45); --check:#d9735f; --good:#9cc59a;
+  --display:Georgia,'Times New Roman',serif;
+  --body:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--body);font-size:15px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1000px;margin:0 auto;display:grid;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(26px,5vw,36px);margin:0;letter-spacing:.01em;text-wrap:balance}
+.sub{color:var(--muted);font-size:14px;margin:0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:22px;align-items:start}
+@media (max-width:820px){.main{grid-template-columns:minmax(0,1fr)}}
+.boardcol{display:grid;gap:10px;min-width:0}
+.bwrap{position:relative;width:min(100%,560px);margin:0 auto;aspect-ratio:1/1;max-width:100%}
+.board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);width:100%;height:100%;border:6px solid var(--paperink);border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.45);background:var(--paper);user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.sq{position:relative;display:flex;align-items:center;justify-content:center;border:0;padding:0;margin:0;background:var(--paper);cursor:pointer;font:inherit;color:inherit;min-width:0}
+.sq.d{background:var(--paperdark)}
+.sq:focus-visible{outline:3px solid var(--lav);outline-offset:-3px;z-index:2}
+.sq.last::before{content:"";position:absolute;inset:0;background:var(--move)}
+.sq.sel::before{content:"";position:absolute;inset:0;background:rgba(183,163,198,.6)}
+.sq.chk::before{content:"";position:absolute;inset:0;background:radial-gradient(circle,var(--check) 0,rgba(217,115,95,.0) 72%)}
+.sq .dot{position:absolute;width:26%;height:26%;border-radius:50%;background:rgba(52,53,46,.38);pointer-events:none}
+.sq .ring{position:absolute;inset:6%;border-radius:50%;border:4px solid rgba(52,53,46,.38);pointer-events:none}
+.pc{position:relative;font-family:'Segoe UI Symbol','Noto Sans Symbols 2','DejaVu Sans','Apple Symbols',serif;font-size:min(9.2vw,52px);line-height:1;pointer-events:none}
+.pc.w{color:#fbf6ea;-webkit-text-stroke:1.2px var(--paperink);text-shadow:0 1px 0 rgba(0,0,0,.25)}
+.pc.b{color:#1f2226;text-shadow:0 1px 0 rgba(255,255,255,.15)}
+.coord{position:absolute;font-size:10px;font-family:var(--mono);color:var(--paperink);opacity:.7;pointer-events:none}
+.coord.f{right:3px;bottom:1px}.coord.r{left:3px;top:1px}
+.promo{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(23,28,32,.7);z-index:5}
+[hidden]{display:none!important}
+.promo .box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:8px;text-align:center}
+.promo .row{display:flex;gap:8px}
+.promo button{width:60px;height:60px;border-radius:8px;border:1px solid var(--line);background:var(--paper);cursor:pointer}
+.promo .pc{font-size:44px}
+.status{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:13px;width:min(100%,560px);margin:0 auto}
+.status b{color:var(--ink);font-weight:600}
+.controls{display:flex;flex-wrap:wrap;gap:8px;width:min(100%,560px);margin:0 auto}
+button.btn{font:inherit;font-size:14px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+button.btn:hover{border-color:var(--gold)}
+button.btn:focus-visible{outline:2px solid var(--lav);outline-offset:2px}
+button.btn.primary{background:var(--gold);color:#1d1a12;border-color:var(--gold);font-weight:600}
+button.btn[disabled]{opacity:.45;cursor:default}
+.side{display:grid;gap:16px;min-width:0}
+.skippy{display:flex;gap:12px;align-items:flex-start}
+.skippy svg{flex:none}
+.bubble{position:relative;background:var(--paper);color:var(--paperink);border-radius:12px;padding:10px 13px;font-family:var(--display);font-size:16px;line-height:1.4;min-height:48px;flex:1;min-width:0}
+.bubble::before{content:"";position:absolute;left:-7px;top:16px;border:7px solid transparent;border-left:0;border-right-color:var(--paper)}
+.who{font-family:var(--body);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6c6a5d;display:block;margin-bottom:2px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h2{font-family:var(--display);font-weight:400;font-size:19px;margin:0 0 4px}
+.card .hint{color:var(--muted);font-size:13px;margin:0 0 10px}
+.skills{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.skills button{width:100%;display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:start;text-align:left;font:inherit;color:var(--ink);background:none;border:1px solid transparent;border-radius:8px;padding:6px 8px;cursor:pointer}
+.skills button:hover{border-color:var(--line)}
+.skills button:focus-visible{outline:2px solid var(--lav)}
+.skills .tick{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:2px;color:#1d1a12}
+.skills .on .tick{background:var(--gold);border-color:var(--gold)}
+.skills .lvl{font-weight:600;font-size:14px}
+.skills .lvl small{font-weight:400;color:var(--muted);font-size:12px;margin-left:4px}
+.skills .note{display:block;color:var(--muted);font-size:12.5px}
+.skills .off .lvl{color:var(--muted)}
+.skills .beat{color:var(--good);font-size:12px;margin-left:6px;font-weight:600}
+.locked{list-style:none;margin:10px 0 0;padding:10px 0 0;border-top:1px dashed var(--line);display:grid;gap:3px;color:var(--muted);font-size:13px}
+.locked li::before{content:"○ ";color:var(--lav)}
+.score{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.score div{background:var(--bg);border-radius:8px;padding:8px 4px}
+.score b{display:block;font-family:var(--display);font-size:24px;font-weight:400;font-variant-numeric:tabular-nums}
+.score span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.best{margin:10px 0 0;font-size:14px}
+.best b{color:var(--gold)}
+.ladder{display:flex;gap:5px;margin-top:8px}
+.ladder i{flex:1;height:8px;border-radius:4px;background:var(--line)}
+.ladder i.won{background:var(--gold)}
+.moves{font-family:var(--mono);font-size:13px;max-height:150px;overflow:auto;display:grid;grid-template-columns:2.4em 1fr 1fr;gap:2px 8px;font-variant-numeric:tabular-nums}
+.moves .n{color:var(--muted)}
+.free{font-size:12.5px;color:var(--muted);margin:0}
+.toggle{display:flex;gap:6px;flex-wrap:wrap}
+.toggle button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+@media (prefers-reduced-motion:no-preference){.pc{transition:transform .12s}.sq.sel .pc{transform:translateY(-2px)}}
+</style>
+</head><body>
+
+<div class="wrap">
+  <header>
+    <h1>Chess with Skippy</h1>
+    <p class="sub">Skippy is learning chess one skill at a time. Pick how many skills he uses and try to beat him.</p>
+  </header>
+
+  <div class="main">
+    <div class="boardcol">
+      <div class="bwrap">
+        <div class="board" id="board" role="grid" aria-label="Chessboard"></div>
+        <div class="promo" id="promo" hidden>
+          <div class="box"><div>Promote to</div><div class="row" id="promoRow"></div></div>
+        </div>
+      </div>
+      <div class="status"><span id="turnLine"><b>Your move</b></span><span id="levelLine"></span></div>
+      <div class="controls">
+        <button class="btn primary" id="newBtn" type="button">New game</button>
+        <button class="btn" id="undoBtn" type="button">Take back</button>
+        <div class="toggle" role="group" aria-label="Your colour">
+          <button class="btn" id="asW" type="button" aria-pressed="true">Play white</button>
+          <button class="btn" id="asB" type="button" aria-pressed="false">Play black</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="skippy">
+        <svg width="54" height="58" viewBox="0 0 54 58" aria-hidden="true">
+          <line x1="27" y1="3" x2="27" y2="12" stroke="#e9be64" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="27" cy="4" r="3.5" fill="#e9be64"/>
+          <rect x="5" y="12" width="44" height="36" rx="12" fill="#eee3c9" stroke="#34352e" stroke-width="2.5"/>
+          <rect x="12" y="20" width="30" height="18" rx="7" fill="#34352e"/>
+          <circle id="eyeL" cx="21" cy="29" r="3.4" fill="#e9be64"/>
+          <circle id="eyeR" cx="33" cy="29" r="3.4" fill="#e9be64"/>
+          <path d="M20 43 Q27 46 34 43" stroke="#34352e" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <rect x="17" y="49" width="20" height="7" rx="3" fill="#b7a3c6"/>
+        </svg>
+        <div class="bubble" aria-live="polite"><span class="who">Skippy</span><span id="say">Your move. I've been practising. Sort of.</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Skippy's skill notebook</h2>
+        <p class="hint">Tap a skill to set how far down the list Skippy plays. Each skill adds to the ones above it.</p>
+        <ul class="skills" id="skills"></ul>
+        <ul class="locked" id="locked" aria-label="Skills Skippy hasn't learned yet"></ul>
+      </div>
+
+      <div class="card">
+        <h2>Your record</h2>
+        <div class="score"><div><b id="sW">0</b><span>Wins</span></div><div><b id="sD">0</b><span>Draws</span></div><div><b id="sL">0</b><span>Losses</span></div></div>
+        <p class="best" id="bestLine">Highest skill beaten: <b>none yet</b></p>
+        <div class="ladder" id="ladder" aria-hidden="true"></div>
+        <p class="free" style="margin-top:8px">Saved on this device only.</p>
+      </div>
+
+      <div class="card">
+        <h2>Moves</h2>
+        <div class="moves" id="moves"></div>
+      </div>
+
+      <p class="free">Every move Skippy makes is worked out right here in your browser. No AI is called while you play, so a game costs nothing.</p>
+    </div>
+  </div>
+</div>
+
+<script id="eng">
+// Skippy chess engine. Plain JS, runs in the browser, no network.
+var SC = (function () {
+  var START = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+  var KN = [[1,2],[2,1],[2,-1],[1,-2],[-1,-2],[-2,-1],[-2,1],[-1,2]];
+  var KG = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]];
+  var BD = [[1,1],[1,-1],[-1,1],[-1,-1]], RD = [[1,0],[-1,0],[0,1],[0,-1]], QD = BD.concat(RD);
+  var CR = []; for (var i = 0; i < 64; i++) CR.push(15);
+  CR[0] = 13; CR[4] = 12; CR[7] = 14; CR[56] = 7; CR[60] = 3; CR[63] = 11;
+
+  function col(p) { return p ? (p === p.toUpperCase() ? 'w' : 'b') : null; }
+  function other(c) { return c === 'w' ? 'b' : 'w'; }
+  function sqName(i) { return 'abcdefgh'[i & 7] + ((i >> 3) + 1); }
+  function sqIdx(n) { return (parseInt(n[1], 10) - 1) * 8 + 'abcdefgh'.indexOf(n[0]); }
+
+  function parse(fen) {
+    var parts = (fen || START).split(' ');
+    var b = []; for (var i = 0; i < 64; i++) b.push('');
+    var rows = parts[0].split('/');
+    for (var r = 0; r < 8; r++) {
+      var f = 0;
+      for (var k = 0; k < rows[r].length; k++) {
+        var ch = rows[r][k];
+        if (ch >= '1' && ch <= '8') f += +ch; else { b[(7 - r) * 8 + f] = ch; f++; }
+      }
+    }
+    var cs = parts[2] || '-', c = 0;
+    if (cs.indexOf('K') >= 0) c |= 1; if (cs.indexOf('Q') >= 0) c |= 2;
+    if (cs.indexOf('k') >= 0) c |= 4; if (cs.indexOf('q') >= 0) c |= 8;
+    var s = { b: b, turn: parts[1] || 'w', castle: c, ep: (!parts[3] || parts[3] === '-') ? -1 : sqIdx(parts[3]),
+      half: +parts[4] || 0, full: +parts[5] || 1, undo: [], kings: { w: -1, b: -1 } };
+    for (i = 0; i < 64; i++) { if (b[i] === 'K') s.kings.w = i; if (b[i] === 'k') s.kings.b = i; }
+    return s;
+  }
+
+  function fen(s) {
+    var out = '';
+    for (var r = 7; r >= 0; r--) {
+      var e = 0;
+      for (var f = 0; f < 8; f++) { var p = s.b[r * 8 + f]; if (!p) e++; else { if (e) { out += e; e = 0; } out += p; } }
+      if (e) out += e; if (r) out += '/';
+    }
+    var cs = (s.castle & 1 ? 'K' : '') + (s.castle & 2 ? 'Q' : '') + (s.castle & 4 ? 'k' : '') + (s.castle & 8 ? 'q' : '');
+    return out + ' ' + s.turn + ' ' + (cs || '-') + ' ' + (s.ep < 0 ? '-' : sqName(s.ep)) + ' ' + s.half + ' ' + s.full;
+  }
+  // position key for repetition (no clocks)
+  function key(s) { return fen(s).split(' ').slice(0, 4).join(' '); }
+
+  function attacked(b, sq, by) {
+    var r = sq >> 3, f = sq & 7, i, r1, f1, q;
+    var up = by === 'w';
+    var pr = up ? r - 1 : r + 1, P = up ? 'P' : 'p';
+    if (pr >= 0 && pr < 8) {
+      if (f > 0 && b[pr * 8 + f - 1] === P) return true;
+      if (f < 7 && b[pr * 8 + f + 1] === P) return true;
+    }
+    var N = up ? 'N' : 'n', K = up ? 'K' : 'k', Bi = up ? 'B' : 'b', R = up ? 'R' : 'r', Q = up ? 'Q' : 'q';
+    for (i = 0; i < 8; i++) {
+      r1 = r + KN[i][0]; f1 = f + KN[i][1];
+      if (r1 >= 0 && r1 < 8 && f1 >= 0 && f1 < 8 && b[r1 * 8 + f1] === N) return true;
+      r1 = r + KG[i][0]; f1 = f + KG[i][1];
+      if (r1 >= 0 && r1 < 8 && f1 >= 0 && f1 < 8 && b[r1 * 8 + f1] === K) return true;
+    }
+    for (i = 0; i < 4; i++) {
+      r1 = r + BD[i][0]; f1 = f + BD[i][1];
+      while (r1 >= 0 && r1 < 8 && f1 >= 0 && f1 < 8) {
+        q = b[r1 * 8 + f1];
+        if (q) { if (q === Bi || q === Q) return true; break; }
+        r1 += BD[i][0]; f1 += BD[i][1];
+      }
+      r1 = r + RD[i][0]; f1 = f + RD[i][1];
+      while (r1 >= 0 && r1 < 8 && f1 >= 0 && f1 < 8) {
+        q = b[r1 * 8 + f1];
+        if (q) { if (q === R || q === Q) return true; break; }
+        r1 += RD[i][0]; f1 += RD[i][1];
+      }
+    }
+    return false;
+  }
+
+  function pseudo(s, capsOnly) {
+    var m = [], b = s.b, us = s.turn, them = other(us);
+    for (var i = 0; i < 64; i++) {
+      var p = b[i]; if (!p || col(p) !== us) continue;
+      var r = i >> 3, f = i & 7, t = p.toLowerCase(), j, to, q, r1, f1;
+      if (t === 'p') {
+        var dir = us === 'w' ? 1 : -1, start = us === 'w' ? 1 : 6, last = us === 'w' ? 7 : 0;
+        r1 = r + dir;
+        if (r1 < 0 || r1 > 7) continue;
+        var fw = r1 * 8 + f;
+        if (!b[fw]) {
+          if (r1 === last) {
+            var pl = capsOnly ? 'q' : 'qrbn';
+            for (j = 0; j < pl.length; j++) m.push({ from: i, to: fw, p: p, cap: '', promo: us === 'w' ? pl[j].toUpperCase() : pl[j] });
+          } else if (!capsOnly) {
+            m.push({ from: i, to: fw, p: p, cap: '' });
+            if (r === start) { var fw2 = (r + 2 * dir) * 8 + f; if (!b[fw2]) m.push({ from: i, to: fw2, p: p, cap: '', dbl: true }); }
+          }
+        }
+        for (var d = -1; d <= 1; d += 2) {
+          f1 = f + d; if (f1 < 0 || f1 > 7) continue;
+          to = r1 * 8 + f1; q = b[to];
+          if (q && col(q) === them) {
+            if (r1 === last) { for (j = 0; j < 4; j++) m.push({ from: i, to: to, p: p, cap: q, promo: us === 'w' ? 'QRBN'[j] : 'qrbn'[j] }); }
+            else m.push({ from: i, to: to, p: p, cap: q });
+          } else if (!q && to === s.ep) {
+            m.push({ from: i, to: to, p: p, cap: us === 'w' ? 'p' : 'P', ep: true });
+          }
+        }
+      } else if (t === 'n' || t === 'k') {
+        var D = t === 'n' ? KN : KG;
+        for (j = 0; j < 8; j++) {
+          r1 = r + D[j][0]; f1 = f + D[j][1];
+          if (r1 < 0 || r1 > 7 || f1 < 0 || f1 > 7) continue;
+          to = r1 * 8 + f1; q = b[to];
+          if (!q) { if (!capsOnly) m.push({ from: i, to: to, p: p, cap: '' }); }
+          else if (col(q) === them) m.push({ from: i, to: to, p: p, cap: q });
+        }
+        if (t === 'k' && !capsOnly) {
+          if (us === 'w' && i === 4) {
+            if ((s.castle & 1) && !b[5] && !b[6] && b[7] === 'R' && !attacked(b, 4, them) && !attacked(b, 5, them) && !attacked(b, 6, them))
+              m.push({ from: 4, to: 6, p: p, cap: '', castle: true });
+            if ((s.castle & 2) && !b[3] && !b[2] && !b[1] && b[0] === 'R' && !attacked(b, 4, them) && !attacked(b, 3, them) && !attacked(b, 2, them))
+              m.push({ from: 4, to: 2, p: p, cap: '', castle: true });
+          } else if (us === 'b' && i === 60) {
+            if ((s.castle & 4) && !b[61] && !b[62] && b[63] === 'r' && !attacked(b, 60, them) && !attacked(b, 61, them) && !attacked(b, 62, them))
+              m.push({ from: 60, to: 62, p: p, cap: '', castle: true });
+            if ((s.castle & 8) && !b[59] && !b[58] && !b[57] && b[56] === 'r' && !attacked(b, 60, them) && !attacked(b, 59, them) && !attacked(b, 58, them))
+              m.push({ from: 60, to: 58, p: p, cap: '', castle: true });
+          }
+        }
+      } else {
+        var SD = t === 'b' ? BD : t === 'r' ? RD : QD;
+        for (j = 0; j < SD.length; j++) {
+          r1 = r + SD[j][0]; f1 = f + SD[j][1];
+          while (r1 >= 0 && r1 < 8 && f1 >= 0 && f1 < 8) {
+            to = r1 * 8 + f1; q = b[to];
+            if (!q) { if (!capsOnly) m.push({ from: i, to: to, p: p, cap: '' }); }
+            else { if (col(q) === them) m.push({ from: i, to: to, p: p, cap: q }); break; }
+            r1 += SD[j][0]; f1 += SD[j][1];
+          }
+        }
+      }
+    }
+    return m;
+  }
+
+  function make(s, m) {
+    var b = s.b, us = s.turn;
+    s.undo.push({ m: m, castle: s.castle, ep: s.ep, half: s.half, kw: s.kings.w, kb: s.kings.b });
+    b[m.to] = m.promo || m.p; b[m.from] = '';
+    if (m.ep) b[m.to + (us === 'w' ? -8 : 8)] = '';
+    if (m.castle) {
+      if (m.to === 6) { b[5] = b[7]; b[7] = ''; } else if (m.to === 2) { b[3] = b[0]; b[0] = ''; }
+      else if (m.to === 62) { b[61] = b[63]; b[63] = ''; } else if (m.to === 58) { b[59] = b[56]; b[56] = ''; }
+    }
+    if (m.p === 'K') s.kings.w = m.to; else if (m.p === 'k') s.kings.b = m.to;
+    s.castle &= CR[m.from] & CR[m.to];
+    s.ep = m.dbl ? (m.from + m.to) / 2 : -1;
+    s.half = (m.p === 'P' || m.p === 'p' || m.cap) ? 0 : s.half + 1;
+    if (us === 'b') s.full++;
+    s.turn = other(us);
+  }
+
+  function unmake(s) {
+    var u = s.undo.pop(), m = u.m, b = s.b;
+    s.turn = other(s.turn);
+    var us = s.turn;
+    b[m.from] = m.p;
+    if (m.ep) { b[m.to] = ''; b[m.to + (us === 'w' ? -8 : 8)] = m.cap; }
+    else b[m.to] = m.cap;
+    if (m.castle) {
+      if (m.to === 6) { b[7] = b[5]; b[5] = ''; } else if (m.to === 2) { b[0] = b[3]; b[3] = ''; }
+      else if (m.to === 62) { b[63] = b[61]; b[61] = ''; } else if (m.to === 58) { b[56] = b[59]; b[59] = ''; }
+    }
+    s.castle = u.castle; s.ep = u.ep; s.half = u.half; s.kings.w = u.kw; s.kings.b = u.kb;
+    if (us === 'b') s.full--;
+  }
+
+  function legal(s, capsOnly) {
+    var ps = pseudo(s, capsOnly), out = [], us = s.turn, them = other(us);
+    for (var i = 0; i < ps.length; i++) {
+      make(s, ps[i]);
+      if (!attacked(s.b, s.kings[us], them)) out.push(ps[i]);
+      unmake(s);
+    }
+    return out;
+  }
+  function inCheck(s) { return attacked(s.b, s.kings[s.turn], other(s.turn)); }
+
+  function perft(s, d) {
+    if (d === 0) return 1;
+    var ms = legal(s), n = 0;
+    if (d === 1) return ms.length;
+    for (var i = 0; i < ms.length; i++) { make(s, ms[i]); n += perft(s, d - 1); unmake(s); }
+    return n;
+  }
+
+  function uci(m) { return sqName(m.from) + sqName(m.to) + (m.promo ? m.promo.toLowerCase() : ''); }
+
+  // Short algebraic notation, computed before the move is made.
+  function san(s, m) {
+    var out;
+    if (m.castle) out = (m.to & 7) === 6 ? 'O-O' : 'O-O-O';
+    else {
+      var t = m.p.toUpperCase();
+      if (t === 'P') out = (m.cap ? 'abcdefgh'[m.from & 7] + 'x' : '') + sqName(m.to) + (m.promo ? '=' + m.promo.toUpperCase() : '');
+      else {
+        var amb = legal(s).filter(function (o) { return o.p === m.p && o.to === m.to && o.from !== m.from; });
+        var dis = '';
+        if (amb.length) {
+          var sameF = amb.some(function (o) { return (o.from & 7) === (m.from & 7); });
+          var sameR = amb.some(function (o) { return (o.from >> 3) === (m.from >> 3); });
+          if (!sameF) dis = 'abcdefgh'[m.from & 7];
+          else if (!sameR) dis = '' + ((m.from >> 3) + 1);
+          else dis = sqName(m.from);
+        }
+        out = t + dis + (m.cap ? 'x' : '') + sqName(m.to);
+      }
+    }
+    make(s, m);
+    if (inCheck(s)) out += legal(s).length ? '+' : '#';
+    unmake(s);
+    return out;
+  }
+
+  // ---------- evaluation ----------
+  var VAL = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 0 };
+  var PST = {
+    p: [0,0,0,0,0,0,0,0, 50,50,50,50,50,50,50,50, 10,10,20,30,30,20,10,10, 5,5,10,25,25,10,5,5, 0,0,0,20,20,0,0,0, 5,-5,-10,0,0,-10,-5,5, 5,10,10,-20,-20,10,10,5, 0,0,0,0,0,0,0,0],
+    n: [-50,-40,-30,-30,-30,-30,-40,-50, -40,-20,0,0,0,0,-20,-40, -30,0,10,15,15,10,0,-30, -30,5,15,20,20,15,5,-30, -30,0,15,20,20,15,0,-30, -30,5,10,15,15,10,5,-30, -40,-20,0,5,5,0,-20,-40, -50,-40,-30,-30,-30,-30,-40,-50],
+    b: [-20,-10,-10,-10,-10,-10,-10,-20, -10,0,0,0,0,0,0,-10, -10,0,5,10,10,5,0,-10, -10,5,5,10,10,5,5,-10, -10,0,10,10,10,10,0,-10, -10,10,10,10,10,10,10,-10, -10,5,0,0,0,0,5,-10, -20,-10,-10,-10,-10,-10,-10,-20],
+    r: [0,0,0,0,0,0,0,0, 5,10,10,10,10,10,10,5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, 0,0,0,5,5,0,0,0],
+    q: [-20,-10,-10,-5,-5,-10,-10,-20, -10,0,0,0,0,0,0,-10, -10,0,5,5,5,5,0,-10, -5,0,5,5,5,5,0,-5, 0,0,5,5,5,5,0,-5, -10,5,5,5,5,5,0,-10, -10,0,5,0,0,0,0,-10, -20,-10,-10,-5,-5,-10,-10,-20],
+    k: [-30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -20,-30,-30,-40,-40,-30,-30,-20, -10,-20,-20,-20,-20,-20,-20,-10, 20,20,0,0,0,0,20,20, 20,30,10,0,0,10,30,20],
+    ke: [-50,-40,-30,-20,-20,-30,-40,-50, -30,-20,-10,0,0,-10,-20,-30, -30,-10,20,30,30,20,-10,-30, -30,-10,30,40,40,30,-10,-30, -30,-10,30,40,40,30,-10,-30, -30,-10,20,30,30,20,-10,-30, -30,-30,0,0,0,0,-30,-30, -50,-30,-30,-30,-30,-30,-30,-50]
+  };
+
+  // score from white's point of view
+  function evalWhite(s, usePst) {
+    var b = s.b, score = 0, heavy = 0, i, p, t;
+    if (usePst) for (i = 0; i < 64; i++) { p = b[i]; if (p && p.toLowerCase() !== 'p' && p.toLowerCase() !== 'k') heavy += VAL[p.toLowerCase()]; }
+    var endgame = heavy <= 2600;
+    for (i = 0; i < 64; i++) {
+      p = b[i]; if (!p) continue;
+      t = p.toLowerCase();
+      var w = p !== t, v = VAL[t];
+      if (usePst) {
+        var tab = t === 'k' && endgame ? PST.ke : PST[t];
+        var idx = w ? (7 - (i >> 3)) * 8 + (i & 7) : i;
+        v += tab[idx];
+      }
+      score += w ? v : -v;
+    }
+    return score;
+  }
+  function evalSide(s, opt) { var e = evalWhite(s, opt.pst); return s.turn === 'w' ? e : -e; }
+
+  var MATE = 100000, INF = 1e9;
+
+  function orderMoves(ms, first) {
+    for (var i = 0; i < ms.length; i++) {
+      var m = ms[i], sc = 0;
+      if (m.cap) sc = 10 * VAL[m.cap.toLowerCase()] - VAL[m.p.toLowerCase()] + 1000;
+      if (m.promo) sc += 800;
+      if (first && m.from === first.from && m.to === first.to && m.promo === first.promo) sc = 1e7;
+      m._o = sc;
+    }
+    ms.sort(function (a, c) { return c._o - a._o; });
+  }
+
+  function tick(ctx) {
+    if ((++ctx.nodes & 1023) === 0 && Date.now() > ctx.deadline) ctx.stop = true;
+    if (ctx.nodes > ctx.maxNodes) ctx.stop = true;
+  }
+
+  function qs(s, alpha, beta, opt, ctx, qd) {
+    tick(ctx);
+    var stand = evalSide(s, opt);
+    if (stand >= beta) return stand;
+    if (stand > alpha) alpha = stand;
+    if (qd >= 6 || ctx.stop) return stand;
+    var ms = legal(s, true);
+    orderMoves(ms);
+    for (var i = 0; i < ms.length; i++) {
+      make(s, ms[i]);
+      var v = -qs(s, -beta, -alpha, opt, ctx, qd + 1);
+      unmake(s);
+      if (v >= beta) return v;
+      if (v > alpha) alpha = v;
+    }
+    return alpha;
+  }
+
+  function negamax(s, depth, alpha, beta, ply, opt, ctx) {
+    tick(ctx);
+    if (ctx.stop) return 0;
+    if (s.half >= 100) return 0;
+    if (depth <= 0) return opt.quiesce ? qs(s, alpha, beta, opt, ctx, 0) : evalSide(s, opt);
+    var ms = legal(s);
+    if (!ms.length) return inCheck(s) ? -MATE + ply : 0;
+    if (opt.order) orderMoves(ms);
+    var best = -INF;
+    for (var i = 0; i < ms.length; i++) {
+      make(s, ms[i]);
+      var v = -negamax(s, depth - 1, -beta, -alpha, ply + 1, opt, ctx);
+      unmake(s);
+      if (ctx.stop) return best === -INF ? 0 : best;
+      if (v > best) best = v;
+      if (v > alpha) alpha = v;
+      if (alpha >= beta) break;
+    }
+    return best;
+  }
+
+  // ---------- Skippy's skills ----------
+  // Each skill is a small piece of code. Turning skills on makes Skippy stronger.
+  // Nothing here calls a server: every move is worked out in the player's browser.
+  var SKILLS = [
+    { id: 'moves',   name: 'Knows how the pieces move', note: 'Picks any legal move. Likes grabbing things.' },
+    { id: 'count',   name: 'Counts the pieces',          note: 'A queen is worth more than a pawn. Who knew.' },
+    { id: 'ahead',   name: 'Looks one move ahead',       note: 'Checks what you could do back before moving.' },
+    { id: 'center',  name: 'Likes the middle of the board', note: 'Knights in the middle, king tucked away.' },
+    { id: 'safe',    name: 'Checks before grabbing',     note: 'Follows trades to the end so it stops dropping pieces.' },
+    { id: 'book',    name: 'Has an opening notebook',    note: 'A few real openings, written down.' },
+    { id: 'longer',  name: 'Thinks a bit longer',        note: 'Looks deeper when there is time.' }
+  ];
+  var NEXT_SKILLS = [
+    'Pushes pawns in the endgame',
+    'Knows the back-rank trick',
+    'Remembers how you like to open'
+  ];
+
+  function optsFor(level) {
+    return {
+      level: level,
+      random: level <= 1,
+      pst: level >= 4,
+      quiesce: level >= 5,
+      book: level >= 6,
+      order: level >= 3,
+      depth: level <= 2 ? 1 : level <= 5 ? 2 : level === 6 ? 3 : 4,
+      noise: level <= 2 ? 60 : level === 3 ? 35 : level === 4 ? 20 : level === 5 ? 10 : 4,
+      ms: level >= 7 ? 1600 : 900
+    };
+  }
+
+  var BOOK = {
+    '': ['e2e4', 'd2d4', 'c2c4', 'g1f3'],
+    'e2e4': ['e7e5', 'c7c5', 'e7e6', 'c7c6'],
+    'e2e4 e7e5': ['g1f3'],
+    'e2e4 e7e5 g1f3': ['b8c6'],
+    'e2e4 e7e5 g1f3 b8c6': ['f1b5', 'f1c4', 'd2d4'],
+    'e2e4 e7e5 g1f3 b8c6 f1b5': ['a7a6', 'g8f6'],
+    'e2e4 e7e5 g1f3 b8c6 f1c4': ['f8c5', 'g8f6'],
+    'e2e4 e7e5 g1f3 b8c6 d2d4': ['e5d4'],
+    'e2e4 c7c5': ['g1f3', 'b1c3'],
+    'e2e4 c7c5 g1f3': ['d7d6', 'b8c6', 'e7e6'],
+    'e2e4 e7e6': ['d2d4'],
+    'e2e4 e7e6 d2d4': ['d7d5'],
+    'e2e4 c7c6': ['d2d4'],
+    'e2e4 c7c6 d2d4': ['d7d5'],
+    'd2d4': ['d7d5', 'g8f6'],
+    'd2d4 d7d5': ['c2c4', 'g1f3'],
+    'd2d4 d7d5 c2c4': ['e7e6', 'c7c6'],
+    'd2d4 g8f6': ['c2c4', 'g1f3'],
+    'd2d4 g8f6 c2c4': ['e7e6', 'g7g6'],
+    'c2c4': ['e7e5', 'g8f6', 'c7c5'],
+    'g1f3': ['d7d5', 'g8f6'],
+    'e2e3': ['e7e5', 'd7d5'],
+    'd2d3': ['e7e5', 'd7d5'],
+    'b1c3': ['d7d5', 'e7e5'],
+    'g2g3': ['d7d5', 'e7e5']
+  };
+
+  function pick(arr, rnd) { return arr[Math.floor(rnd() * arr.length)]; }
+
+  // history: array of uci strings for the game so far
+  function think(s, level, history, rnd) {
+    rnd = rnd || Math.random;
+    var opt = optsFor(level);
+    var ms = legal(s);
+    if (!ms.length) return null;
+    if (opt.random) {
+      var caps = ms.filter(function (m) { return m.cap; });
+      if (caps.length && rnd() < 0.6) return { move: pick(caps, rnd), score: 0, why: 'grab' };
+      return { move: pick(ms, rnd), score: 0, why: 'random' };
+    }
+    if (opt.book && history) {
+      var line = BOOK[history.join(' ')];
+      if (line) {
+        var choices = ms.filter(function (m) { return line.indexOf(uci(m)) >= 0; });
+        if (choices.length) return { move: pick(choices, rnd), score: 0, why: 'book' };
+      }
+    }
+    var ctx = { nodes: 0, maxNodes: 400000, deadline: Date.now() + opt.ms, stop: false };
+    var bestMove = null, bestScore = 0, scores = null;
+    for (var d = 1; d <= opt.depth; d++) {
+      var res = [], alpha = -INF;
+      orderMoves(ms, bestMove);
+      for (var i = 0; i < ms.length; i++) {
+        make(s, ms[i]);
+        var v = -negamax(s, d - 1, -INF, -alpha + 0, 1, opt, ctx);
+        unmake(s);
+        if (ctx.stop) break;
+        res.push({ m: ms[i], v: v });
+      }
+      if (ctx.stop && d > 1) break;
+      scores = res;
+      res.sort(function (a, c) { return c.v - a.v; });
+      bestMove = res[0].m; bestScore = res[0].v;
+      if (bestScore > MATE - 100) break;
+    }
+    // A little noise makes lower skill levels play like a beginner, not a robot.
+    var top = null, topV = -INF;
+    for (var k = 0; k < scores.length; k++) {
+      var sv = scores[k].v;
+      var mateish = Math.abs(sv) > MATE - 1000;
+      var nv = mateish ? sv : sv + (rnd() * 2 - 1) * opt.noise;
+      if (nv > topV) { topV = nv; top = scores[k]; }
+    }
+    return { move: top.m, score: top.v, why: 'search', nodes: ctx.nodes };
+  }
+
+  function insufficient(s) {
+    var minors = 0, other = 0;
+    for (var i = 0; i < 64; i++) {
+      var p = s.b[i]; if (!p) continue; var t = p.toLowerCase();
+      if (t === 'k') continue;
+      if (t === 'n' || t === 'b') minors++; else other++;
+    }
+    return other === 0 && minors <= 1;
+  }
+
+  return { START: START, parse: parse, fen: fen, key: key, legal: legal, make: make, unmake: unmake, inCheck: inCheck,
+    perft: perft, uci: uci, san: san, think: think, evalWhite: evalWhite, insufficient: insufficient,
+    SKILLS: SKILLS, NEXT_SKILLS: NEXT_SKILLS, sqName: sqName, sqIdx: sqIdx, col: col };
+})();
+if (typeof module !== 'undefined') module.exports = SC;
+
+</script>
+<script>
+(function(){
+  var GLY={k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
+  var VS='︎';
+  var LINES={
+    start:["Your move. I've been practising. Sort of.","I set the pieces up myself. Mostly the right way round.","Ready when you are. I'm always ready. It's a whole thing."],
+    startB:["I'll go first, then. Bold of you.","Me first? Okay. No pressure. Some pressure."],
+    think:["Hmm.","Counting.","Looking at the horse one.","Thinking. Please don't watch.","One second. Two seconds."],
+    book:["That's in my notebook.","I wrote this one down.","Notebook says this. I trust the notebook."],
+    iTake:["I'll take that, thanks.","Mine now.","Oh. Was that allowed? It was allowed.","Sorry. Not very sorry."],
+    youTake:["I was using that.","Fair.","Noted. Filed under 'ouch'.","Hey. That one had a name."],
+    iCheck:["Check! I think. Yes. Check.","Check. Your king should probably move."],
+    youCheck:["Ah. My king is in trouble.","Okay, okay, I see it.","Rude. Accurate, but rude."],
+    winning:["I might be winning? This is new for me.","Things are going well. Suspiciously well."],
+    losing:["Things are going badly. I'll keep trying.","I'm behind. I'm aware. Let me think."],
+    quiet:["Interesting.","Huh.","Okay.","I see what you did. I think.","Mm-hm."],
+    iWin:["Checkmate. I'll be unbearable for about a minute.","Checkmate! Was that luck? Don't answer."],
+    youWin:["Checkmate. Well played. I'm writing this down so I learn.","You got me. I'm going to need a new skill."],
+    draw:["A draw. Nobody cries.","Draw. We'll call it teamwork."],
+    undo:["Take-backs are allowed here. I use them too."],
+    level:["New settings. Same robot.","Okay. I'll play like that."]
+  };
+  function line(k){var a=LINES[k];return a[Math.floor(Math.random()*a.length)];}
+  function say(t){document.getElementById('say').textContent=t;}
+
+  var STORE='skippy-chess-v1';
+  function loadRec(){try{var r=JSON.parse(localStorage.getItem(STORE)||'null');if(r&&r.beat)return r;}catch(e){}return{w:0,d:0,l:0,beat:{},level:4};}
+  function saveRec(){try{localStorage.setItem(STORE,JSON.stringify(rec));}catch(e){}}
+  var rec=loadRec();
+
+  var s, hist=[], sans=[], keys={}, you='w', level=Math.min(7,Math.max(1,rec.level||4));
+  var sel=-1, targets=[], over=false, busy=false, lastMove=null, pending=null, gameId=0;
+
+  // engine worker (falls back to the page if workers are blocked)
+  var worker=null;
+  try{
+    var src=document.getElementById('eng').textContent+
+      '\nonmessage=function(e){var d=e.data;var st=SC.parse(d.fen);var t=SC.think(st,d.level,d.hist);postMessage({id:d.id,uci:t?SC.uci(t.move):null,score:t?t.score:0,why:t?t.why:null});};';
+    worker=new Worker(URL.createObjectURL(new Blob([src],{type:'text/javascript'})));
+    worker.onerror=function(){worker=null;};
+  }catch(e){worker=null;}
+
+  var boardEl=document.getElementById('board');
+  function sqEl(i){return boardEl.querySelector('[data-sq="'+i+'"]');}
+
+  function render(){
+    boardEl.innerHTML='';
+    var chkSq=SC.inCheck(s)?s.kings[s.turn]:-1;
+    for(var vr=0;vr<8;vr++)for(var vf=0;vf<8;vf++){
+      var r=you==='w'?7-vr:vr, f=you==='w'?vf:7-vf, i=r*8+f;
+      var b=document.createElement('button');
+      b.type='button';b.className='sq'+((r+f)%2===0?' d':'');b.dataset.sq=i;
+      var p=s.b[i];
+      b.setAttribute('aria-label',SC.sqName(i)+(p?' '+(SC.col(p)==='w'?'white ':'black ')+({k:'king',q:'queen',r:'rook',b:'bishop',n:'knight',p:'pawn'})[p.toLowerCase()]:''));
+      if(lastMove&&(i===lastMove.from||i===lastMove.to))b.classList.add('last');
+      if(i===sel)b.classList.add('sel');
+      if(i===chkSq)b.classList.add('chk');
+      if(p){var sp=document.createElement('span');sp.className='pc '+SC.col(p);sp.textContent=GLY[p.toLowerCase()]+VS;b.appendChild(sp);}
+      if(targets.some(function(m){return m.to===i;})){var d=document.createElement('span');d.className=p||(s.ep===i&&targets.some(function(m){return m.to===i&&m.ep;}))?'ring':'dot';b.appendChild(d);}
+      if(vf===0){var c=document.createElement('span');c.className='coord r';c.textContent=r+1;b.appendChild(c);}
+      if(vr===7){var c2=document.createElement('span');c2.className='coord f';c2.textContent='abcdefgh'[f];b.appendChild(c2);}
+      b.addEventListener('click',onSq);
+      boardEl.appendChild(b);
+    }
+    var tl=document.getElementById('turnLine');
+    if(over)tl.innerHTML='<b>'+over+'</b>';
+    else if(s.turn===you)tl.innerHTML='<b>Your move</b>'+(SC.inCheck(s)?' (you are in check)':'');
+    else tl.innerHTML='<b>Skippy is thinking</b>';
+    document.getElementById('levelLine').textContent='Skippy uses '+level+' of 7 skills';
+    document.getElementById('undoBtn').disabled=busy||hist.length<(you==='w'?1:2);
+    renderMoves();
+  }
+
+  function renderMoves(){
+    var el=document.getElementById('moves');el.innerHTML='';
+    for(var i=0;i<sans.length;i+=2){
+      var n=document.createElement('span');n.className='n';n.textContent=(i/2+1)+'.';
+      var a=document.createElement('span');a.textContent=sans[i];
+      var c=document.createElement('span');c.textContent=sans[i+1]||'';
+      el.appendChild(n);el.appendChild(a);el.appendChild(c);
+    }
+    el.scrollTop=el.scrollHeight;
+  }
+
+  function renderSkills(){
+    var ul=document.getElementById('skills');ul.innerHTML='';
+    SC.SKILLS.forEach(function(sk,idx){
+      var lv=idx+1, li=document.createElement('li'), b=document.createElement('button');
+      b.type='button';b.className=lv<=level?'on':'off';b.setAttribute('aria-pressed',lv===level?'true':'false');
+      b.innerHTML='<span class="tick">'+(lv<=level?'&#10003;':'')+'</span><span><span class="lvl"></span><span class="note"></span></span>';
+      b.querySelector('.lvl').textContent=sk.name;
+      var sm=document.createElement('small');sm.textContent='level '+lv;b.querySelector('.lvl').appendChild(sm);
+      if(rec.beat[lv]){var bt=document.createElement('span');bt.className='beat';bt.textContent='beaten';b.querySelector('.lvl').appendChild(bt);}
+      b.querySelector('.note').textContent=sk.note;
+      b.addEventListener('click',function(){setLevel(lv);});
+      li.appendChild(b);ul.appendChild(li);
+    });
+    var lk=document.getElementById('locked');lk.innerHTML='';
+    SC.NEXT_SKILLS.forEach(function(n){var li=document.createElement('li');li.textContent=n+' (still learning)';lk.appendChild(li);});
+  }
+
+  function renderRec(){
+    document.getElementById('sW').textContent=rec.w;document.getElementById('sD').textContent=rec.d;document.getElementById('sL').textContent=rec.l;
+    var best=0;for(var k in rec.beat)if(rec.beat[k]&&+k>best)best=+k;
+    document.getElementById('bestLine').innerHTML='Highest skill beaten: <b>'+(best?'level '+best+' of 7':'none yet')+'</b>';
+    var ld=document.getElementById('ladder');ld.innerHTML='';
+    for(var i=1;i<=7;i++){var x=document.createElement('i');if(rec.beat[i])x.className='won';ld.appendChild(x);}
+  }
+
+  function setLevel(lv){
+    level=lv;rec.level=lv;saveRec();renderSkills();render();
+    if(!busy)say(line('level'));
+  }
+
+  function onSq(e){
+    if(over||busy||s.turn!==you)return;
+    var i=+e.currentTarget.dataset.sq, p=s.b[i];
+    var hits=targets.filter(function(m){return m.to===i;});
+    if(sel>=0&&hits.length){
+      if(hits.length>1&&hits[0].promo){askPromo(hits);return;}
+      play(hits[0],true);return;
+    }
+    if(p&&SC.col(p)===you){sel=i;targets=SC.legal(s).filter(function(m){return m.from===i;});}
+    else{sel=-1;targets=[];}
+    render();
+  }
+
+  function askPromo(opts){
+    var box=document.getElementById('promo'),row=document.getElementById('promoRow');row.innerHTML='';
+    ['q','r','b','n'].forEach(function(t){
+      var m=opts.filter(function(o){return o.promo.toLowerCase()===t;})[0];
+      var b=document.createElement('button');b.type='button';b.setAttribute('aria-label',({q:'Queen',r:'Rook',b:'Bishop',n:'Knight'})[t]);
+      var sp=document.createElement('span');sp.className='pc '+you;sp.textContent=GLY[t]+VS;b.appendChild(sp);
+      b.addEventListener('click',function(){box.hidden=true;play(m,true);});
+      row.appendChild(b);
+    });
+    box.hidden=false;row.querySelector('button').focus();
+  }
+
+  function finishCheck(){
+    var ms=SC.legal(s), k=SC.key(s);
+    if(!ms.length){
+      if(SC.inCheck(s))return s.turn===you?'iWin':'youWin';
+      return 'draw:Stalemate';
+    }
+    if(keys[k]>=3)return 'draw:Same position three times';
+    if(s.half>=100)return 'draw:Fifty moves with no capture';
+    if(SC.insufficient(s))return 'draw:Not enough pieces left to mate';
+    return null;
+  }
+
+  function endGame(res){
+    if(res==='youWin'){over='You win! Checkmate.';rec.w++;rec.beat[level]=true;say(line('youWin'));}
+    else if(res==='iWin'){over='Skippy wins. Checkmate.';rec.l++;say(line('iWin'));}
+    else{over='Draw. '+res.split(':')[1]+'.';rec.d++;say(line('draw'));}
+    saveRec();renderRec();renderSkills();
+  }
+
+  function play(m,byYou){
+    sans.push(SC.san(s,m));
+    SC.make(s,m);hist.push(SC.uci(m));lastMove=m;sel=-1;targets=[];
+    var k=SC.key(s);keys[k]=(keys[k]||0)+1;
+    var res=finishCheck();
+    if(res){endGame(res);render();return;}
+    if(byYou){
+      if(SC.inCheck(s))say(line('youCheck'));
+      else if(m.cap)say(line('youTake'));
+      else if(Math.random()<.35)say(line('quiet'));
+      render();skippyMove();
+    }else render();
+  }
+
+  function skippyMove(){
+    busy=true;render();
+    var myGame=gameId, started=Date.now();
+    if(Math.random()<.4)say(line('think'));
+    var done=function(u,score,why){
+      var wait=Math.max(0,450-(Date.now()-started));
+      setTimeout(function(){
+        if(myGame!==gameId)return;
+        busy=false;
+        var m=SC.legal(s).filter(function(x){return SC.uci(x)===u;})[0];
+        if(!m){render();return;}
+        play(m,false);
+        if(over)return;
+        if(SC.inCheck(s))say(line('iCheck'));
+        else if(m.cap)say(line('iTake'));
+        else if(why==='book')say(line('book'));
+        else if(score>250&&Math.random()<.5)say(line('winning'));
+        else if(score<-250&&Math.random()<.5)say(line('losing'));
+      },wait);
+    };
+    if(worker){
+      pending=function(d){if(d.id===myGame)done(d.uci,d.score,d.why);};
+      worker.onmessage=function(e){pending&&pending(e.data);};
+      worker.postMessage({id:myGame,fen:SC.fen(s),level:level,hist:hist.slice()});
+    }else{
+      setTimeout(function(){var t=SC.think(s,level,hist);done(t?SC.uci(t.move):null,t?t.score:0,t?t.why:null);},30);
+    }
+  }
+
+  function newGame(){
+    gameId++;busy=false;over=false;s=SC.parse();hist=[];sans=[];keys={};keys[SC.key(s)]=1;sel=-1;targets=[];lastMove=null;
+    document.getElementById('promo').hidden=true;
+    if(you==='b'){say(line('startB'));render();skippyMove();}
+    else{say(line('start'));render();}
+  }
+
+  function undo(){
+    if(busy||!hist.length)return;
+    function back(){var k=SC.key(s);keys[k]--;SC.unmake(s);hist.pop();sans.pop();}
+    back();
+    while(hist.length&&s.turn!==you)back();
+    over=false;sel=-1;targets=[];lastMove=s.undo.length?s.undo[s.undo.length-1].m:null;
+    say(line('undo'));render();
+    if(s.turn!==you)skippyMove();
+  }
+
+  function setSide(c){
+    you=c;document.getElementById('asW').setAttribute('aria-pressed',c==='w');document.getElementById('asB').setAttribute('aria-pressed',c==='b');newGame();
+  }
+
+  document.getElementById('newBtn').addEventListener('click',newGame);
+  document.getElementById('undoBtn').addEventListener('click',undo);
+  document.getElementById('asW').addEventListener('click',function(){setSide('w');});
+  document.getElementById('asB').addEventListener('click',function(){setSide('b');});
+
+  // blink
+  setInterval(function(){var a=document.getElementById('eyeL'),b=document.getElementById('eyeR');a.setAttribute('r','0.8');b.setAttribute('r','0.8');setTimeout(function(){a.setAttribute('r','3.4');b.setAttribute('r','3.4');},140);},4200);
+
+  renderSkills();renderRec();newGame();
+  window.__skippyChess={get state(){return s;},get over(){return over;},get busy(){return busy;},setLevel:setLevel,play:function(u){var m=SC.legal(s).filter(function(x){return SC.uci(x)===u;})[0];if(m&&!busy&&!over&&s.turn===you)play(m,true);return !!m;}};
+})();
+</script>
+
+</body></html>
