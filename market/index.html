@@ -30,11 +30,38 @@ button[aria-pressed="true"]{background:var(--acc);color:#1a0f05;border-color:var
 .intro p{margin:0 0 20px;font:600 clamp(15px,3.6vw,19px)/1.4 'Inter',system-ui,sans-serif;color:#fff6dc}
 #enter{font-size:17px;padding:14px 22px;background:#f39732;color:#1a0f05;border-color:#f39732}
 .toast a{color:#f2cf4a;font-weight:800}
+/* v2 draft: gift doors, today's door, countdown, shop, sound, snowballs */
+.doors button{position:relative;overflow:visible;background:linear-gradient(90deg,#7a1f1b 0 46%,#f2cf4a 46% 54%,#7a1f1b 54%);transition:transform .15s}
+.doors button.open{background:linear-gradient(90deg,#1f5a37 0 46%,#f2cf4a 46% 54%,#1f5a37 54%)}
+.doors button span{position:relative;z-index:1;text-shadow:0 1px 0 #0f1318,0 -1px 0 #0f1318,1px 0 0 #0f1318,-1px 0 0 #0f1318}
+.doors button.locked{background:rgba(10,18,48,.8)}
+.doors button.today{animation:today 1.1s ease-in-out infinite;border-color:#fff;box-shadow:0 0 0 2px #f2cf4a,0 0 18px 4px rgba(242,207,74,.8)}
+.doors button.today::after{content:'NEW';position:absolute;top:-9px;right:-6px;font:900 9px/1 'Inter',system-ui,sans-serif;background:#f39732;color:#1a0f05;padding:3px 4px;border-radius:5px;border:1px solid #0f1318}
+.doors button:active{transform:scale(.92)}
+@keyframes today{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-2px) rotate(-4deg)}75%{transform:translateY(-2px) rotate(4deg)}}
+.count{position:fixed;left:50%;transform:translateX(-50%);top:calc(92px + env(safe-area-inset-top,0px));font:800 13px/1 'Inter',system-ui,sans-serif;color:#1a0f05;background:#f2cf4a;border:2px solid #0f1318;border-radius:999px;padding:7px 12px;white-space:nowrap;pointer-events:none}
+.count{display:none!important}body.in .count:not([hidden]){display:block!important}
+.intro .soon{display:inline-block;margin:-6px 0 18px;font:800 14px/1.3 'Inter',system-ui,sans-serif;color:#1a0f05;background:#f2cf4a;border-radius:999px;padding:6px 12px}
+.bar .hint{display:none}
+@media (min-width:900px){.bar .hint{display:inline-block}}
+button.snow[aria-pressed="true"]{background:#dfe7f4;color:#0f1318;border-color:#fff}
+.shop{position:fixed;left:16px;right:16px;bottom:calc(72px + env(safe-area-inset-bottom,0px));max-width:420px;margin:0 auto;background:rgba(10,18,48,.94);border:2px solid #f2cf4a;border-radius:16px;padding:14px;z-index:15;font:600 14px/1.35 'Inter',system-ui,sans-serif;max-height:60vh;overflow:auto}
+.shop h2{margin:0 0 8px;font:900 18px/1.1 'Inter Display','Inter','Arial Black',sans-serif;color:#f2cf4a}
+.shop a.item{display:flex;justify-content:space-between;gap:10px;color:#fff6dc;text-decoration:none;padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.06);margin-bottom:6px}
+.shop a.item b{color:#f2cf4a;font-weight:800;white-space:nowrap}
+.shop a.item:hover{background:rgba(242,207,74,.18)}
+.shop .more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.shop .more a{color:#f2cf4a;font-weight:800}
+.shop .x{float:right;padding:6px 10px}
+.shop a.item{flex-direction:column;gap:2px}.shop a.item small{opacity:.7;font-size:12px}
+@media (max-width:600px){.toast{bottom:calc(118px + env(safe-area-inset-bottom,0px))}}
 </style><script src="/ub-stickers.js"></script><!-- Web Analytics beacon slot --><link rel="icon" href="/favicon-32.png"></head><body>
 <div id="stage"></div>
-<div class="bar"><button data-mode="drone" aria-pressed="true">Drone view</button><button data-mode="short" aria-pressed="false">▶ Watch the Short (17 s)</button><a href="/derby" style="display:inline-block;padding:10px 14px;border:2px solid #f2cf4a;border-radius:999px;background:#151d3a;color:#fff6dc;text-decoration:none;font:bold 14px system-ui">Play Wind-Up Derby</a><span class="hint" id="found">0 / 24 doors opened</span><span class="hint">Open a door, tap a bot or a stall. Drag to fly.</span></div>
+<div class="bar"><button data-mode="drone" aria-pressed="true" hidden>Drone view</button><button data-mode="short" aria-pressed="false">&#9654; Watch the Short</button><button class="snow" id="snowBtn" aria-pressed="false">&#10052; Snowballs</button><button id="shopBtn" aria-expanded="false">&#127873; Gift shop</button><button id="soundBtn" aria-pressed="true" aria-label="Sound">&#128266;</button><span class="hint" id="found">0 / 24 doors opened</span><span class="hint">Open a door, tap a bot or a stall. Drag to fly.</span></div>
+<div id="count" class="count" hidden></div>
+<div id="shop" class="shop" hidden role="dialog" aria-label="Market gift shop"><button class="x" id="shopX" aria-label="Close">&#10005;</button><h2>Market gift shop</h2><div id="shopList"></div><div class="more"><a href="/stickers">Your sticker album &rarr;</a><a href="/derby">Play Wind-Up Derby &rarr;</a></div></div>
 <div class="doors" aria-label="Advent doors"><button data-door="1" aria-label="Door 1">1</button><button data-door="2" aria-label="Door 2">2</button><button data-door="3" aria-label="Door 3">3</button><button data-door="4" aria-label="Door 4">4</button><button data-door="5" aria-label="Door 5">5</button><button data-door="6" aria-label="Door 6">6</button><button data-door="7" aria-label="Door 7">7</button><button data-door="8" aria-label="Door 8">8</button><button data-door="9" aria-label="Door 9">9</button><button data-door="10" aria-label="Door 10">10</button><button data-door="11" aria-label="Door 11">11</button><button data-door="12" aria-label="Door 12">12</button><button data-door="13" aria-label="Door 13">13</button><button data-door="14" aria-label="Door 14">14</button><button data-door="15" aria-label="Door 15">15</button><button data-door="16" aria-label="Door 16">16</button><button data-door="17" aria-label="Door 17">17</button><button data-door="18" aria-label="Door 18">18</button><button data-door="19" aria-label="Door 19">19</button><button data-door="20" aria-label="Door 20">20</button><button data-door="21" aria-label="Door 21">21</button><button data-door="22" aria-label="Door 22">22</button><button data-door="23" aria-label="Door 23">23</button><button data-door="24" aria-label="Door 24">24</button></div>
-<div id="intro" class="intro"><div class="intro-card"><h1>Crew Christmas Market</h1><p>Seven robots. Twenty-four doors. Every phrase taken literally.</p><button id="enter">Enter the market</button></div></div>
+<div id="intro" class="intro"><div class="intro-card"><h1>Crew Christmas Market</h1><p>Seven robots. Twenty-four doors. Every phrase taken literally.</p><div class="soon" id="soon" hidden></div><br><button id="enter">Enter the market</button></div></div>
 <div id="setup" class="setup" hidden></div><div id="doortag" class="doortag" hidden></div><div id="toast" class="toast" role="status" hidden></div>
 <script>window.MARKET_PREVIEW=false</script>
 <script src="/market-preview/three.min.js"></script>
@@ -950,7 +977,11 @@ let door = 0, doorAt = -99, finaleAt = -99;
 const opened = new Set();
 const el = renderer.domElement, ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
 const PREVIEW = typeof window.MARKET_PREVIEW === 'boolean' ? window.MARKET_PREVIEW : true;
-const unlocked = n => PREVIEW || Date.now() >= new Date(2026, 11, n).getTime();
+const NOW = () => window.MARKET_NOW ? window.MARKET_NOW() : Date.now();   // draft preview can pretend a date
+const unlocked = n => PREVIEW || NOW() >= new Date(2026, 11, n).getTime();
+const daysTo = n => Math.ceil((new Date(2026, 11, n).getTime() - NOW()) / 864e5);
+const plural = (d, w) => `${d} ${w}${d === 1 ? '' : 's'}`;
+function todayDoor() { let t = 0; for (let n = 1; n <= 24; n++) if (unlocked(n)) t = n; return t; }
 const $ = id => document.getElementById(id);
 function toast(msg, html) { const tb = $('toast'); if (!tb) return; tb.innerHTML = html || ''; if (!html) tb.textContent = msg; tb.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => tb.hidden = true, 6000); }
 function doorLen(n) { const D = DOORS[n]; return D.gag === 'home' ? BUB[D.who][1] - BUB[D.who][0] + 2.4 : D.gag === 'finale' ? 7 : BUB_END + 0.6; }
@@ -958,28 +989,173 @@ function playScene(n) {
   setMode('drone'); door = n; doorAt = nowT;
 }
 function openDoor(n) {
-  if (!unlocked(n)) return toast(`Door ${n} opens on December ${n}.`);
+  if (!unlocked(n)) { const d = daysTo(n); sfx('locked'); return toast(d <= 1 ? `Door ${n} opens tomorrow.` : `Door ${n} opens December ${n}. That's ${plural(d, 'day')} away.`); }
+  sfx('door');
   playScene(n); opened.add(n);
   window.UBStickers?.give('d'+n); if([1,2,3,4,5,6,7].every(i=>opened.has(i)))window.UBStickers?.give('g4');
   if (n === 24) finaleAt = nowT + 0.9;
+  const my = (openDoor.seq = (openDoor.seq || 0) + 1);
+  setTimeout(() => { if (openDoor.seq !== my || mode === 'short') return; const url = location.origin + location.pathname + '?open=' + n;
+    toast('', `<span>Door ${n}: ${DOORS[n].setup}</span> <a href="#" id="shareDoor">Share this door &rarr;</a>`);
+    const a = $('shareDoor'); if (a) a.onclick = ev => { ev.preventDefault();
+      if (navigator.share) navigator.share({ title: `Crew Christmas Market, Door ${n}`, url }).catch(() => {});
+      else navigator.clipboard?.writeText(url).then(() => toast('Link copied. Paste it anywhere.'), () => toast(url)); }; }, doorLen(n) * 1000 + 1200);
   try { localStorage.setItem('market-opened', JSON.stringify([...opened])); } catch (e) {}
   paintDoors();
 }
 function paintDoors() {
   document.querySelectorAll('[data-door]').forEach(b => { const n = +b.dataset.door;
-    b.classList.toggle('open', opened.has(n)); b.classList.toggle('locked', !unlocked(n)); b.setAttribute('aria-pressed', n === door); });
+    if (!b.firstElementChild) b.innerHTML = `<span>${n}</span>`;
+    b.classList.toggle('open', opened.has(n)); b.classList.toggle('locked', !unlocked(n)); b.setAttribute('aria-pressed', n === door);
+    b.classList.toggle('today', n === todayDoor() && !opened.has(n) && n !== door); });
+  const cd = $('count'), so = $('soon'), d1 = daysTo(1);
+  const msg = unlocked(1) ? '' : d1 <= 1 ? 'Door 1 opens tomorrow' : `Door 1 opens December 1 \u00b7 ${plural(d1, 'day')} to go`;
+  if (cd) { cd.hidden = !msg; cd.textContent = msg ? msg + ' \u00b7 tap a robot now' : ''; }
+  if (so) { so.hidden = !msg; so.textContent = msg ? msg + '. The robots are already here.' : ''; }
   const fc = $('found'); if (fc) fc.textContent = `${opened.size} / 24 doors opened`;
 }
 try { JSON.parse(localStorage.getItem('market-opened') || '[]').forEach(n => opened.add(n)); } catch (e) {}
-function setMode(m) { mode = m; document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m)); }
+// ---------- sound: code-made chimes + a soft music-box loop (no audio files) ----------
+const AU = { on: true, ctx: null, master: null, next: 0 };
+try { AU.on = localStorage.getItem('market-sound') !== 'off'; } catch (e) {}
+function auStart() {
+  if (AU.ctx || !AU.on || CAPTURE) return;
+  try { AU.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+  AU.master = AU.ctx.createGain(); AU.master.gain.value = 0.5; AU.master.connect(AU.ctx.destination);
+  AU.next = AU.ctx.currentTime + 0.3; setInterval(musicTick, 250);
+}
+function tone(f, at, len, vol = 0.12, type = 'sine') {
+  const c = AU.ctx; if (!c || !AU.on) return; const o = c.createOscillator(), g = c.createGain();
+  o.type = type; o.frequency.value = f; g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(vol, at + 0.01);
+  g.gain.exponentialRampToValueAtTime(0.0008, at + len); o.connect(g); g.connect(AU.master); o.start(at); o.stop(at + len + 0.05);
+}
+const bell = (f, at, vol = 0.1) => { tone(f, at, 1.4, vol); tone(f * 2.76, at, 0.5, vol * 0.25); tone(f * 5.4, at, 0.2, vol * 0.1); };
+// original 8-bar music-box tune (C major), 2.4 s per bar
+const TUNE = [[0,76],[.3,79],[.6,84],[1.2,83],[1.5,79],[1.8,76],[2.4,74],[2.7,77],[3,81],[3.6,79],[4.2,74],[4.8,72],[5.1,76],[5.4,79],[6,84],[6.3,86],[6.6,88],[7.2,86],
+  [7.8,84],[8.4,81],[8.7,84],[9,88],[9.6,86],[10.2,81],[10.8,79],[11.1,77],[11.4,76],[12,74],[12.6,79],[13.2,72],[14.4,84],[14.7,88],[15,91],[15.6,84]];
+const BASS = [48, 43, 45, 41, 48, 45, 43, 48];
+const midi = m => 440 * Math.pow(2, (m - 69) / 12);
+function musicTick() {
+  const c = AU.ctx; if (!c || !AU.on || document.hidden) { if (c) AU.next = Math.max(AU.next, c.currentTime + 0.3); return; }
+  while (AU.next < c.currentTime + 1) { const at = AU.next;
+    TUNE.forEach(([t, m]) => bell(midi(m), at + t * 1.25, 0.045));
+    BASS.forEach((m, i) => tone(midi(m), at + i * 3, 2.8, 0.025, 'triangle'));
+    AU.next = at + 24; }
+}
+function sfx(kind) {
+  if (!AU.ctx || !AU.on) return; const t = AU.ctx.currentTime + 0.01;
+  if (kind === 'door') [84, 88, 91, 96].forEach((m, i) => bell(midi(m), t + i * 0.07, 0.11));
+  else if (kind === 'locked') { tone(180, t, 0.12, 0.12, 'square'); tone(150, t + 0.1, 0.16, 0.1, 'square'); }
+  else if (kind === 'pop') { tone(660, t, 0.08, 0.1, 'triangle'); tone(990, t + 0.04, 0.1, 0.07, 'triangle'); }
+  else if (kind === 'throw') { const o = AU.ctx.createOscillator(), g = AU.ctx.createGain(); o.frequency.setValueAtTime(900, t); o.frequency.exponentialRampToValueAtTime(250, t + 0.35);
+    g.gain.setValueAtTime(0.05, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.35); o.connect(g); g.connect(AU.master); o.start(t); o.stop(t + 0.4); }
+  else if (kind === 'splat') { const n = AU.ctx.createBufferSource(), b = AU.ctx.createBuffer(1, 4800, 48000), d = b.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 3); n.buffer = b;
+    const g = AU.ctx.createGain(); g.gain.value = 0.35; n.connect(g); g.connect(AU.master); n.start(t); }
+  else if (kind === 'chime') [79, 84, 88].forEach((m, i) => bell(midi(m), t + i * 0.12, 0.09));
+}
+function setSound(on) { AU.on = on; const b = $('soundBtn'); if (b) { b.setAttribute('aria-pressed', on); b.innerHTML = on ? '&#128266;' : '&#128263;'; }
+  try { localStorage.setItem('market-sound', on ? 'on' : 'off'); } catch (e) {}
+  if (on) { auStart(); AU.ctx?.resume?.(); } else AU.ctx?.suspend?.(); }
+
+// ---------- snowballs: a toy mode, tap to throw, bots react ----------
+// each robot answers in order (12 lines), 3 quick hits = a "pelted" line, near misses get teased,
+// and sometimes a nearby teammate comments on the hit
+const SNOW_LINES = {
+  wrench: ['COLD.\nALSO RUDE.', 'BATTERY: 2%.\nWORTH IT.', 'I FIX THINGS.\nNOT THIS.', 'SNOW IN MY\nGEARS. GREAT.', 'FILING A\nREPAIR TICKET.', 'TREE: LIT.\nME: DAMP.',
+    'WARRANTY DOES\nNOT COVER THIS.', 'RUST IN\n3... 2...', 'I HAD ONE JOB.\nNOW TWO.', 'COOLING SYSTEM:\nOVERACHIEVING.', 'THAT LOOSENED\nA BOLT.', 'ADDING SNOW TO\nSPARE PARTS.'],
+  radar: ['INCOMING:\nSNOW.', 'SOURCE:\nLOCATED.', 'SIGNAL:\n100% SNOWBALL.', "DIDN'T SEE IT.\nI'M A DISH.", 'FORECAST:\nREVENGE.', 'PINGING\nBACK. SOON.',
+    'SNOW DETECTED.\nTOO LATE.', 'STATIC:\nMOSTLY YOU.', 'NO BARS.\nJUST SNOW.', 'BROADCASTING:\nOW.', 'I PICKED UP\nYOUR ATTITUDE.', 'REROUTING\nTO SHELTER.'],
+  skippy: ["I'LL ALLOW IT.\nONCE.", 'THAT WAS\nTWICE.', 'YOUR AIM\nIS MID.', "I'M WRITING A\nPOEM ABOUT THIS.", 'NOTED.\nFOREVER.', 'HELLO TO\nYOU TOO.',
+    'BOLD. WRONG,\nBUT BOLD.', 'MY CHESTNUT\nSAW THAT.', 'I PREFER MY\nSNOW FALLING.', 'ODD QUESTION:\nWHY?', 'ADDING YOU TO\nMY DIARY.', 'NOTHING RHYMES\nWITH SNOWBALL.'],
+  rowan: ['ADDED TO\nTHE LIST.', 'LIST:\nUPDATED.', 'NAUGHTY.\nCHECKED TWICE.', 'SCHEDULING\nA MEETING.', "THAT'S NOT ON\nTHE AGENDA.", 'CHECKED IT.\nIT WAS YOU.',
+    'SNOW WAS NOT\nAPPROVED.', 'MOVING THIS TO\nNEXT WEEK.', 'PER MY LAST\nSNOWBALL.', 'ESCALATING TO\nMANAGEMENT.', 'LET ME\nCIRCLE BACK.', 'STATUS:\nCOLD.'],
+  bernard: ['GOT THAT\nON CAMERA.', 'SECOND TAKE.\nBETTER.', 'CUT! FROM\nTHE TOP.', 'SLOW-MO\nREPLAY READY.', "THAT'S THE\nTRAILER SHOT.", 'LENS: SNOWY.\nSHOT: GREAT.',
+    'AND...\nACTION!', 'FOCUS PULL:\nSNOW.', 'THAT TAKE WAS\nUNSCRIPTED.', 'WE CAN FIX\nIT IN POST.', 'NEED THAT FROM\nANOTHER ANGLE.', 'ROLLING.\nKEEP GOING.'],
+  kestrel: ['THROW:\n6/10.', 'THROW:\n7/10. GROWTH.', 'SPIN: GOOD.\nARC: LAZY.', "CHECKED IT.\nIT'S SNOW.", 'FLAKE COUNT:\nTOO MANY.', 'PASS.\nBARELY.',
+    'LOGGED AS A\nKNOWN ISSUE.', 'RETEST\nREQUIRED.', 'SEVERITY:\nCHILLY.', 'REPRODUCED IT.\nTWICE.', 'NOT A BUG.\nA SNOWBALL.', 'FORM: 8/10.\nIMPACT: 3/10.'],
+  lyra: ["STARS DON'T\nDODGE.", 'STILL\nSHINING.', "I'M ON A TREE.\nHOW?", 'THE STAR\nFELT THAT.', 'TWINKLING\nANGRILY.', 'MAKE A WISH.\nNOT THAT ONE.',
+    'I WAS\nMID-TWINKLE.', 'ASTRONOMERS WILL\nHEAR OF THIS.', 'MY SHINE\nIS SMUDGED.', 'SHOOTING STAR?\nNO. SNOWBALL.', 'HIGH UP.\nSTILL HIT.', 'GRAVITY WAS\nON YOUR SIDE.'],
+};
+const SNOW_PELT = {
+  wrench: ['OK. TRUCE.\nTRUCE?', 'ALL SYSTEMS:\nSNOW.'], radar: ['TOO MANY\nSIGNALS.', 'MAYDAY.\nMAYDAY.'], skippy: ['THIS IS\nA PATTERN.', 'FINE. YOU WIN.\nTODAY.'],
+  rowan: ['NEW RULE:\nNO SNOW.', 'THIS MEETING\nIS OVER.'], bernard: ["THAT'S A WRAP.\nPLEASE.", 'CLOSED SET!\nCLOSED SET!'],
+  kestrel: ['VOLUME:\nEXCESSIVE.', 'TEST FAILED:\nME.'], lyra: ['STAR:\nDIMMING. STOP.', 'WISHING YOU\nWOULD STOP.'] };
+const SNOW_MISS = {
+  wrench: ['MISSED.\nCHECK YOUR AIM.', 'NOT EVEN\nCLOSE.'], radar: ['MISSED BY\nSIX FEET.', 'TRAJECTORY:\nHOPEFUL.'], skippy: ['WHOOSH.\nMID.', 'WAS THAT\nFOR ME?'],
+  rowan: ['MISS:\nRECORDED.', 'NICE TRY.\nNOTED.'], bernard: ['MISSED\nTHE SHOT.', 'OUT OF\nFRAME.'], kestrel: ['THROW:\n2/10.', 'FAILED.\nTRY AGAIN.'],
+  lyra: ['SO FAR\nBELOW ME.', 'AIM FOR\nTHE STARS.'] };
+const SNOW_WATCH = {
+  wrench: ["I'LL FIX\nTHEM LATER.", "GLAD THAT\nWASN'T ME.", 'NICE ARC.'], radar: ["TRACKED IT.\nDIDN'T WARN THEM.", 'IMPACT\nCONFIRMED.', 'SIGNAL\nSAYS: OOF.'],
+  skippy: ['HA.\nDESERVED.', 'DO IT\nAGAIN.', "THAT'S GOING\nIN MY DIARY."], rowan: ['ADDING THAT TO\nTHEIR FILE.', 'NOTED.', 'NOT MY\nDEPARTMENT.'],
+  bernard: ['PLEASE DO\nTHAT AGAIN.', 'MISSED IT.\nONE MORE?', "THAT'S THE\nPOSTER."], kestrel: ['DIRECT HIT.\nCONFIRMED.', 'THEIR FAULT.\nPROBABLY.', 'SCORE:\n9/10.'],
+  lyra: ['I SAW THAT\nFROM UP HERE.', 'STARS SEE\nEVERYTHING.', 'TWINKLE\nOF JOY.'] };
+const hitTimes = {}, said = {};
+const nextOf = (key, L) => L[(said[key] = (said[key] ?? -1) + 1) % L.length];
+function snowLine(k, t) {
+  const ht = (hitTimes[k] = (hitTimes[k] || []).filter(x => t - x < 4)); ht.push(t);
+  if (ht.length >= 3) { hitTimes[k] = []; return nextOf('p' + k, SNOW_PELT[k]); }
+  return nextOf('h' + k, SNOW_LINES[k]);
+}
+const busy = (k, t) => react[k] && t - react[k].at < 2.6;
+function nearestBot(p, skip, max) { let best = null, bd = max;
+  for (const k in CREW) { if (k === skip || !CREW[k].s.sp.visible) continue; const d = CREW[k].pos.distanceTo(p); if (d < bd) { bd = d; best = k; } } return best; }
+function snowAfter(B, t) {
+  if (B.who) { const w = nearestBot(CREW[B.who].pos, B.who, 9);
+    if (w && !busy(w, t) && Math.random() < 0.5) react[w] = { at: t + 0.9, line: nextOf('w' + w, SNOW_WATCH[w]) }; return; }
+  const m = nearestBot(B.to, null, 2.6); if (m && !busy(m, t)) react[m] = { at: t + 0.25, line: nextOf('m' + m, SNOW_MISS[m]) };
+}
+let snowMode = false, hitsBy = {}; const balls = [], react = {};
+const ballGeo = new THREE.SphereGeometry(0.16, 12, 10), ballMat = new THREE.MeshLambertMaterial({ color: '#ffffff', emissive: '#334' });
+const puffGeo = new THREE.SphereGeometry(0.07, 6, 5);
+function throwAt(target, who) {
+  const from = camera.position.clone().add(new THREE.Vector3(0, -1.2, 0)).lerp(target, 0.15);
+  const m = new THREE.Mesh(ballGeo, ballMat); m.position.copy(from); scene.add(m);
+  balls.push({ m, from, to: target.clone(), at: nowT, dur: clamp(from.distanceTo(target) / 22, 0.35, 0.9), who }); sfx('throw');
+}
+function stepBalls(t) {
+  for (let i = balls.length - 1; i >= 0; i--) { const B = balls[i], p = (t - B.at) / B.dur;
+    if (B.puff) { const q = (t - B.at) / 0.6; B.puff.forEach(P => { P.m.position.addScaledVector(P.v, 0.016); P.v.y -= 0.12; P.m.scale.setScalar(Math.max(0.01, 1 - q)); });
+      if (q >= 1) { B.puff.forEach(P => scene.remove(P.m)); balls.splice(i, 1); } continue; }
+    if (p >= 1) { scene.remove(B.m); sfx('splat');
+      B.puff = Array.from({ length: 10 }, () => { const m = new THREE.Mesh(puffGeo, ballMat); m.position.copy(B.to); scene.add(m);
+        return { m, v: new THREE.Vector3((Math.random() - .5) * 3, Math.random() * 3, (Math.random() - .5) * 3) }; });
+      B.at = t; if (B.who) { hitsBy[B.who] = (hitsBy[B.who] || 0) + 1; react[B.who] = { at: t, line: snowLine(B.who, t) }; sfx('pop'); }
+      snowAfter(B, t);
+      continue; }
+    B.m.position.lerpVectors(B.from, B.to, p); B.m.position.y += Math.sin(p * Math.PI) * B.from.distanceTo(B.to) * 0.18; }
+}
+
+function setMode(m) { mode = m; document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
+  const dv = document.querySelector('[data-mode="drone"]'), sv = document.querySelector('[data-mode="short"]');
+  if (dv && sv) { dv.hidden = m !== 'short'; sv.hidden = m === 'short'; if (m === 'short') dv.innerHTML = '&#9632; Stop the Short'; } }
 document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => { setMode(b.dataset.mode); door = 0; if (b.dataset.mode === 'short') t0 = performance.now(); });
 document.querySelectorAll('[data-door]').forEach(b => b.onclick = () => openDoor(+b.dataset.door));
+{ const sb = $('snowBtn'); if (sb) sb.onclick = () => { snowMode = !snowMode; sb.setAttribute('aria-pressed', snowMode); setMode('drone'); door = 0;
+    toast(snowMode ? 'Snowball mode: tap anywhere to throw. Aim at a robot.' : 'Snowball mode off. Taps play gags again.'); }; }
+{ const so = $('soundBtn'); if (so) { so.onclick = () => setSound(!AU.on); setSound(AU.on); } }
+{ const sh = $('shop'), btn = $('shopBtn'), list = $('shopList');
+  if (list) list.innerHTML = STALLS.map(s => `<a class="item" href="${SHOP + s.shop}" target="_blank" rel="noopener"><b>${s.item} &rarr;</b><small>from the ${s.sign.replace('/', '&amp;').toLowerCase()} stall</small></a>`).join('');
+  const show = v => { if (!sh) return; sh.hidden = !v; if (v && $('toast')) $('toast').hidden = true; btn?.setAttribute('aria-expanded', v); };
+  if (btn) btn.onclick = () => show(sh.hidden); if ($('shopX')) $('shopX').onclick = () => show(false); }
 el.addEventListener('pointerdown', e => { drag = [e.clientX, e.clientY]; moved = 0; el.setPointerCapture(e.pointerId); });
 el.addEventListener('pointermove', e => { if (!drag) return; const dx = e.clientX - drag[0], dy = e.clientY - drag[1]; moved += Math.abs(dx) + Math.abs(dy);
   if (moved > 6) { if (mode !== 'drone') setMode('drone'); door = 0; orbA -= dx * 0.3; orbE = clamp(orbE + dy * 0.004, 0.08, 1.3); } drag = [e.clientX, e.clientY]; });
 el.addEventListener('pointerup', e => { const was = drag; drag = null; if (!was || moved > 6) return;
   const r = el.getBoundingClientRect(); ndc.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
   ray.setFromCamera(ndc, camera);
+  if (snowMode) {
+    const vis = Object.values(CREW).filter(c => c.s.sp.visible);
+    for (const hit of ray.intersectObjects(vis.map(c => c.s.sp), false)) { const s = vis.find(c => c.s.sp === hit.object).s;
+      const x = clamp(Math.floor(hit.uv.x * s.c.width), 0, s.c.width - 1), y = clamp(Math.floor((1 - hit.uv.y) * s.c.height), 0, s.c.height - 1);
+      if (s.g.getImageData(x, y, 1, 1).data[3] < 21) continue; return throwAt(hit.point, s.who); }
+    let best = null, bd = 60;
+    for (const k in CREW) { if (!CREW[k].s.sp.visible) continue; const v = CREW[k].pos.clone().add(new THREE.Vector3(0, 0.8, 0)).project(camera);
+      const d = Math.hypot(r.left + (v.x + 1) / 2 * r.width - e.clientX, r.top + (1 - v.y) / 2 * r.height - e.clientY); if (v.z < 1 && d < bd) { bd = d; best = k; } }
+    if (best) return throwAt(CREW[best].pos.clone().add(new THREE.Vector3(0, 0.9, 0)), best);
+    const g = ray.intersectObjects([solidMesh, ground], false)[0];
+    return throwAt(g ? g.point : ray.ray.at(18, new THREE.Vector3()), null);
+  }
   const tapBot = k => {
     const n = [1, 2, 3, 4, 5, 6, 7].find(i => DOORS[i].who === k);
     playScene(n);
@@ -1010,8 +1186,9 @@ el.addEventListener('pointerup', e => { const was = drag; drag = null; if (!was 
     const d = Math.hypot(r.left + (v.x + 1) / 2 * r.width - e.clientX, r.top + (1 - v.y) / 2 * r.height - e.clientY); if (v.z < 1 && d < bd) { bd = d; best = k; } }
   if (best) tapBot(best); });
 el.addEventListener('wheel', e => { e.preventDefault(); setMode('drone'); door = 0; orbR = clamp(orbR * (1 + e.deltaY * 0.001), 6, 45); }, { passive: false });
-setMode(mode); paintDoors();
-{ const it = $('intro'), go = () => { if (it) it.classList.add('gone'); }; if ($('enter')) $('enter').onclick = go; if (it) it.addEventListener('pointerdown', go); }
+setMode(mode); paintDoors(); setInterval(paintDoors, 60000); window.__paintDoors = paintDoors;
+{ const it = $('intro'), go = () => { if (it) it.classList.add('gone'); document.body.classList.add('in'); auStart();
+    const o = +QS.get('open'); if (o >= 1 && o <= 24 && !go.done) { go.done = true; setTimeout(() => openDoor(o), 400); } }; if ($('enter')) $('enter').onclick = go; if (it) it.addEventListener('pointerdown', go); }
 
 // camera for a door: in front of where the bot stands
 function doorCam(n, p) {
@@ -1053,6 +1230,7 @@ function frame(t) {
   glowMesh.instanceColor.needsUpdate = true;
   treeLight.intensity = 60 * lit;
   halos.forEach(h => { const fl = h.group === 'lyra' ? (0.8 + 0.2 * Math.sin(t * 3)) * (wt > 0.5 ? 1 : 0.3) : 0.92 + 0.08 * Math.sin(t * 7 + h.ph); h.s.scale.setScalar(h.base * fl); });
+  stepBalls(t);
   snowMat.size = D && D.gag === 'snowok' && e > 1.8 ? 0.28 : 0.14;
   for (let i = 0; i < SN; i++) { const s = snowSeed[i];
     snowPos[i * 3] = s[0] + Math.sin(t * 0.7 + s[4]) * 0.6; snowPos[i * 3 + 1] = ((s[1] - t * s[3]) % 24 + 24) % 24; snowPos[i * 3 + 2] = s[2] + Math.cos(t * 0.5 + s[4]) * 0.6; }
@@ -1068,11 +1246,14 @@ function frame(t) {
     else if (fin) { on = true; p0 = t - finaleAt; txt = k === 'rowan' ? 'MERRY CHRISTMAS.\n(WE CHECKED.)' : k === 'wrench' ? 'TREE: LIT.\nME: 4%.' : 'MERRY\nCHRISTMAS!'; }
     else if (S.gag) { on = e >= BUB_AT && e <= BUB_END + 0.6; p0 = e - BUB_AT; txt = typeof D.text === 'function' ? D.text(e) : D.text; }
     else { const [a, b, t0x] = BUB[k]; on = S.bt >= a && S.bt <= b && (mode === 'short' || (D && D.who === k)); p0 = S.bt - a; txt = t0x; }
+    const R = react[k]; if (R && t >= R.at && t - R.at < 2.6 && !fin && !(D && D.who === k)) { on = true; p0 = t - R.at; txt = R.line;
+      const hop = Math.max(0, Math.sin(clamp(p0 / 0.45) * Math.PI)) * 0.45; C.s.sp.position.y += hop; }
+    if (on && !B.sp.visible && mode !== 'short') sfx('pop');
     B.sp.visible = on && S.vis;
     if (on) { drawBubble(B, txt); const p = clamp(p0 / 0.18), pop = p < 1 ? 0.6 + 0.4 * p + Math.sin(p * Math.PI) * 0.18 : 1;
       const big = far || (fin && mode !== 'short'), sc = (big ? 2.6 : 1.12) * pop; B.sp.scale.set(sc * 560 / 300, sc, 1);
       const up = k === 'lyra' && S.pos.y > 5 ? (big ? 2.3 : 2.75) : 2.38 + (big ? 0.9 : 0);
-      B.sp.position.copy(S.pos).add(new THREE.Vector3(0, up, 0)); }
+      B.sp.position.copy(S.pos).add(new THREE.Vector3(0, up, 0)); if (R && t >= R.at && t - R.at < 2.6) B.sp.position.y = C.s.sp.position.y + up; }
   }
   // setup caption: the phrase the bot is about to take literally
   const cap = $('setup'); if (cap && !CAPTURE) cap.classList.add('site');
